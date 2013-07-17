@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org/DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="reports">
+	<typeAlias alias="HashMap" type="java.util.HashMap"/>
+	<typeAlias alias="List" type="java.util.List"/>
+	
+	<select id="get_report" parameterClass="HashMap" resultClass="HashMap">
+		SELECT * FROM reports
+
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="lat_start">
+				<![CDATA[
+					loc_lat > $lat_start$ AND loc_lat < $lat_end$ AND loc_lng > $lng_start$ AND loc_lng < $lng_end$
+				]]> 
+			</isNotNull>
+			<isNotNull prepend="AND" property="datetime_start">
+				<![CDATA[
+					datetime > "$datetime_start$"
+				]]> 
+			</isNotNull>
+		</dynamic>
+
+		LIMIT $limit_start$, $limit_duration$;
+	</select>
+	
+	<select id="get_amount" parameterClass="HashMap" resultClass="long">
+		SELECT COUNT(*) AS amount FROM `reports`
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="lat_start">
+				<![CDATA[
+					loc_lat > $lat_start$ AND loc_lat < $lat_end$ AND loc_lng > $lng_start$ AND loc_lng < $lng_end$
+				]]> 
+			</isNotNull>
+			<isNotNull prepend="AND" property="datetime_start">
+				<![CDATA[
+					datetime > "$datetime_start$"
+				]]> 
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<insert id="put_report" parameterClass="HashMap">
+		INSERT INTO reports (
+			`app_idx`, 
+			`loc_lat`, 
+			`loc_lng`,
+			`loc_accuracy`,
+			`type_report`,
+			`type_disaster`,
+			`content`,
+			`datetime`) 
+		VALUES (
+			$app_idx$, 
+			$loc_lat$, 
+			$loc_lng$,
+			$loc_accuracy$,
+			$type_report$,
+			$type_disaster$,
+			"$content$",
+			"$datetime$");
+	</insert>
+</sqlMap>

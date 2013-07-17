@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org/DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="info">
+	<typeAlias alias="HashMap" type="java.util.HashMap"/>
+	<typeAlias alias="List" type="java.util.List"/>
+	
+	<select id="get_info" parameterClass="HashMap" resultClass="HashMap">
+	
+		SELECT * FROM info LIMIT $limit_start$, $limit_duration$;
+	</select>
+	
+	<select id="get_amount" resultClass="long">
+		SELECT COUNT(*) AS amount FROM `info`
+	</select>
+</sqlMap>

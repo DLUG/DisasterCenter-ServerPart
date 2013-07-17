@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<beans:bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		
+		<beans:property name="location" value="classpath:jdbc.property"/>
+	</beans:bean>
+	
+	<beans:bean id="dataSource" 
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<beans:property name="url" value="${jdbc.url}"/>
+		<beans:property name="username" value="${jdbc.username}"/>
+		<beans:property name="password" value="${jdbc.password}"/>
+	</beans:bean>
+	
+	<beans:bean id="sqlMapClient"
+		class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="configLocations" value="classpath:ibatis/SqlMapConfig.xml" />
+	</beans:bean>
+	
+	<beans:bean id="sqlMapClientTemplate"
+		class="org.springframework.orm.ibatis.SqlMapClientTemplate" >
+		
+		<beans:property name="sqlMapClient" ref="sqlMapClient" />
+	</beans:bean>
+	
+</beans:beans>
