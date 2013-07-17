@@ -65,7 +65,7 @@ public class ControllerAPI {
 		String secret_code = hashing(key + crypt_key);
 		
 		if(modelApp.putApp(key, crypt_key, secret_code)){
-			result.put("status", "0");
+			result.put("status", 0);
 			result.put("msg", "Success");
 			result.put("secret_code",secret_code);
 		} else {
@@ -91,7 +91,7 @@ public class ControllerAPI {
 			return errMsgAuth();
 		
 		if(modelApp.putLocation(key, lat, lng)){
-			result.put("status", "0");
+			result.put("status", 0);
 			result.put("msg", "Success");
 		} else {
 			return errMsgDB();
@@ -119,7 +119,7 @@ public class ControllerAPI {
 			return errMsgAuth();
 		
 		if(modelReport.putReport(appIdx, lat, lng, accuracy, 1, type_disaster, content, new Date())){
-			result.put("status", "0");
+			result.put("status", 0);
 			result.put("msg", "Success");
 		} else {
 			return errMsgDB();
@@ -156,7 +156,7 @@ public class ControllerAPI {
 		} else if(resultList.size() == 0){
 			return errMsgEmpty();
 		} else {
-			result.put("status", "0");
+			result.put("status", 0);
 			result.put("msg", "Success");
 			result.put("count", resultList.size());
 
@@ -204,7 +204,7 @@ public class ControllerAPI {
 		} else if(resultList.size() == 0){
 			return errMsgEmpty();
 		} else {
-			result.put("status", "0");
+			result.put("status", 0);
 			result.put("msg", "Success");
 			result.put("count", resultList.size());
 			
@@ -254,7 +254,7 @@ public class ControllerAPI {
 		} else if(resultList.size() == 0){
 			return errMsgEmpty();
 		} else {
-			result.put("status", "0");
+			result.put("status", 0);
 			result.put("msg", "Success");
 			result.put("count", resultList.size());
 			
@@ -315,7 +315,7 @@ public class ControllerAPI {
 	private Map<String, Object> errMsgEmpty(){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("API Data Empty");
-		result.put("status", "200");
+		result.put("status", 200);
 		result.put("msg", "Data Empty");
 		
 		return result;
@@ -324,7 +324,7 @@ public class ControllerAPI {
 	private Map<String, Object> errMsgDB(){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("API DB Error");
-		result.put("status", "999");
+		result.put("status", 999);
 		result.put("msg", "DB Error");
 		
 		return result;
@@ -333,7 +333,7 @@ public class ControllerAPI {
 	private Map<String, Object> errMsgAuth(){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("API/Auth DB Error");
-		result.put("status", "199");
+		result.put("status", 199);
 		result.put("msg", "Auth Error");
 		
 		return result;
