@@ -2,8 +2,6 @@ package org.dlug.disastercenter.controller;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.dlug.disastercenter.model.ModelApps;
-import org.dlug.disastercenter.model.ModelImpl;
 import org.dlug.disastercenter.model.ModelInfo;
 import org.dlug.disastercenter.model.ModelNews;
 import org.dlug.disastercenter.model.ModelReport;
@@ -20,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -128,14 +124,14 @@ public class ControllerAPI {
 		return result;
 	}
 	
-	@RequestMapping(value = "disaster_realtime", method = {RequestMethod.GET, RequestMethod.POST})
-	public @ResponseBody Map<String, Object> disasterRealtime(
+	@RequestMapping(value = "disaster_report", method = {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody Map<String, Object> disasterReport(
 			@RequestParam(value="lat", required=false, defaultValue="0") double lat,
 			@RequestParam(value="lng", required=false, defaultValue="0") double lng,
 			@RequestParam(value="range", required=false, defaultValue="0") double range,
 			@RequestParam(value="page", required=false, defaultValue="1") int page,
 			@RequestParam(value="offset", required=false, defaultValue="0") long offset){
-		logger.info("API/DisasterRealtime");
+		logger.info("API/DisasterReport");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		if(lat != 0){
@@ -170,7 +166,7 @@ public class ControllerAPI {
 			long resultAmount = modelReport.getAmount(lat, lng, range, startDatetime);
 			if(resultAmount != -1){
 				result.put("total_amount", resultAmount);
-				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
+				result.put("page_amount", (int)((resultAmount - 1) / modelReport.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
 				result.put("status", 999);
@@ -184,6 +180,7 @@ public class ControllerAPI {
 				tmpItem.put("idx", item.get("idx"));
 				tmpItem.put("lat", item.get("loc_lat"));
 				tmpItem.put("lng", item.get("loc_lng"));
+				tmpItem.put("loc_name", item.get("loc_name"));
 				
 				Date datetime = (Date) item.get("datetime");
 				
@@ -226,7 +223,7 @@ public class ControllerAPI {
 			long resultAmount = modelNews.getAmount();
 			if(resultAmount != -1){
 				result.put("total_amount", resultAmount);
-				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
+				result.put("page_amount", (int)((resultAmount - 1) / modelNews.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
 				result.put("status", 999);
@@ -238,10 +235,11 @@ public class ControllerAPI {
 			for(Map<String, Object> item: resultList){
 				Map<String, Object> tmpItem = new HashMap<String, Object>();
 				tmpItem.put("idx", item.get("idx"));
-				if(item.get("loc_lat") != null)
+				if(item.get("loc_lat") != null){
 					tmpItem.put("lat", item.get("loc_lat"));
-				if(item.get("loc_lng") != null)
 					tmpItem.put("lat", item.get("loc_lng"));
+					tmpItem.put("loc_name", item.get("loc_name"));
+				}
 				
 				Date datetime = (Date) item.get("datetime");
 				
@@ -284,7 +282,7 @@ public class ControllerAPI {
 			long resultAmount = modelNews.getAmount();
 			if(resultAmount != -1){
 				result.put("total_amount", resultAmount);
-				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
+				result.put("page_amount", (int)((resultAmount - 1) / modelNews.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
 				result.put("status", 999);

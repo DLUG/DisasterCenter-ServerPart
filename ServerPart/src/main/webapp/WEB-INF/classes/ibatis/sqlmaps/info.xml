@@ -7,7 +7,7 @@
 	<typeAlias alias="HashMap" type="java.util.HashMap"/>
 	<typeAlias alias="List" type="java.util.List"/>
 	
-	<select id="get_info" parameterClass="HashMap" resultClass="HashMap">
+	<select id="get_info_list" parameterClass="HashMap" resultClass="HashMap">
 	
 		SELECT * FROM info 
 		
@@ -19,7 +19,11 @@
 			</isNotNull>
 		</dynamic>
 		
-		LIMIT $limit_start$, $limit_duration$;
+		ORDER BY idx DESC LIMIT $limit_start$, $limit_duration$;
+	</select>
+	
+	<select id="get_info" parameterClass="long" resultClass="HashMap">
+		SELECT * FROM info WHERE `idx` = $idx$;
 	</select>
 	
 	<select id="get_amount" resultClass="long">

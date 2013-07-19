@@ -40,10 +40,21 @@ public class ModelNews extends ModelImpl{
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
 		try{
-			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("news.get_news", parameters);
+			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("news.get_news_list", parameters);
 			
 			return result;
 		} catch (DataAccessException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Map<String, Object> getNews(long idx){
+		try{
+			Map<String, Object> result = (Map<String, Object>) sqlMapClientTemplate.queryForObject("news.get_news", idx);
+			
+			return result;
+		}  catch (DataAccessException e){
 			e.printStackTrace();
 			return null;
 		}

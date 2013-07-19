@@ -59,6 +59,13 @@ public class ModelReport extends ModelImpl{
 		return true;
 	}
 	
+	public List<Map<String, Object>> getReportList(int page){
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		
+		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
+		return getReportProc(parameters, 0, 0, 0, null);
+	}
+	
 	public List<Map<String, Object>> getReportList(int page, double lat, double lng, double rangeKM, Date startDatetime){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		
@@ -90,10 +97,21 @@ public class ModelReport extends ModelImpl{
 		}
 		
 		try{
-			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("reports.get_report", parameters);
+			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("reports.get_report_list", parameters);
 			
 			return result;
 		} catch (DataAccessException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Map<String, Object> getReport(long idx){
+		try{
+			Map<String, Object> result = (Map<String, Object>) sqlMapClientTemplate.queryForObject("reports.get_report", idx);
+			
+			return result;
+		}  catch (DataAccessException e){
 			e.printStackTrace();
 			return null;
 		}

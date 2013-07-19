@@ -6,7 +6,7 @@ request.setCharacterEncoding("UTF-8");
 %>
 <html>
 <head>
-	<title>Under Construct</title>
+	<title>Under Construct (Mobile)</title>
 </head>
 <body>
 <h1>
