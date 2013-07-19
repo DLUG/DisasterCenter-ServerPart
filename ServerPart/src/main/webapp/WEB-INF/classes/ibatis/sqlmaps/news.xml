@@ -8,7 +8,17 @@
 	<typeAlias alias="List" type="java.util.List"/>
 	
 	<select id="get_news" parameterClass="HashMap" resultClass="HashMap">
-		SELECT * FROM news LIMIT $limit_start$, $limit_duration$;
+		SELECT * FROM news
+		
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="offset">
+				<![CDATA[
+					idx <= $offset$
+				]]>
+			</isNotNull>
+		</dynamic>
+		
+		LIMIT $limit_start$, $limit_duration$;
 	</select>
 	
 	<select id="get_amount" resultClass="long">

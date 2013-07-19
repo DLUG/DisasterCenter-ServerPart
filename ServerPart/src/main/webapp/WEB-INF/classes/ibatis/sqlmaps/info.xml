@@ -9,7 +9,17 @@
 	
 	<select id="get_info" parameterClass="HashMap" resultClass="HashMap">
 	
-		SELECT * FROM info LIMIT $limit_start$, $limit_duration$;
+		SELECT * FROM info 
+		
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="offset">
+				<![CDATA[
+					idx <= $offset$
+				]]>
+			</isNotNull>
+		</dynamic>
+		
+		LIMIT $limit_start$, $limit_duration$;
 	</select>
 	
 	<select id="get_amount" resultClass="long">

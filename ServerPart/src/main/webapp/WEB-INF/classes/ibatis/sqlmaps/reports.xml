@@ -21,6 +21,11 @@
 					datetime > "$datetime_start$"
 				]]> 
 			</isNotNull>
+			<isNotNull prepend="AND" property="offset">
+				<![CDATA[
+					idx <= $offset$
+				]]>
+			</isNotNull>
 		</dynamic>
 
 		LIMIT $limit_start$, $limit_duration$;

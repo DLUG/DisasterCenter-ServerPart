@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ModelReport extends ModelImpl{
-	public final static double DEGREE_PER_KM_LAT = 0.008983;
-	public final static double DEGREE_PER_KM_LNG = 0.015060;
+	private final static double DEGREE_PER_KM_LAT = 0.008983;
+	private final static double DEGREE_PER_KM_LNG = 0.015060;
 	
 	public long getAmount(double lat, double lng, double rangeKM, Date startDatetime){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -59,9 +59,23 @@ public class ModelReport extends ModelImpl{
 		return true;
 	}
 	
-	public List<Map<String, Object>> getReport(int page, double lat, double lng, double rangeKM, Date startDatetime){
+	public List<Map<String, Object>> getReportList(int page, double lat, double lng, double rangeKM, Date startDatetime){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		
 		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
+		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
+	}
+	
+	public List<Map<String, Object>> getReportList(long offset, double lat, double lng, double rangeKM, Date startDatetime){
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		
+		parameters.put("limit_start", 0);
+		parameters.put("offset", offset);
+		
+		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
+	}	
+	
+	private List<Map<String, Object>> getReportProc(HashMap<String, Object> parameters, double lat, double lng, double rangeKM, Date startDatetime){
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
 		if(rangeKM != 0){

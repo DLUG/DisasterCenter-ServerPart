@@ -133,7 +133,8 @@ public class ControllerAPI {
 			@RequestParam(value="lat", required=false, defaultValue="0") double lat,
 			@RequestParam(value="lng", required=false, defaultValue="0") double lng,
 			@RequestParam(value="range", required=false, defaultValue="0") double range,
-			@RequestParam(value="page", required=false, defaultValue="1") int page){
+			@RequestParam(value="page", required=false, defaultValue="1") int page,
+			@RequestParam(value="offset", required=false, defaultValue="0") long offset){
 		logger.info("API/DisasterRealtime");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
@@ -149,7 +150,13 @@ public class ControllerAPI {
 		cal.add(Calendar.DATE, -1);
 		Date startDatetime = cal.getTime();
 		
-		List<Map<String, Object>> resultList = modelReport.getReport(page, lat, lng, range, startDatetime);
+		List<Map<String, Object>> resultList = null;
+		
+		if(offset == 0){
+			resultList = modelReport.getReportList(page, lat, lng, range, startDatetime);
+		} else {
+			resultList = modelReport.getReportList(offset, lat, lng, range, startDatetime);
+		}
 		
 		if(resultList == null){
 			return errMsgDB();
@@ -193,11 +200,18 @@ public class ControllerAPI {
 	
 	@RequestMapping(value = "disaster_news", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map<String, Object> disasterNews(
-			@RequestParam(value="page", required=false, defaultValue="1") int page){
+			@RequestParam(value="page", required=false, defaultValue="1") int page,
+			@RequestParam(value="offset", required=false, defaultValue="0") long offset){
 		logger.info("API/DisasterNews");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		List<Map<String, Object>> resultList = modelNews.getNews(page);
+		List<Map<String, Object>> resultList = null;
+		
+		if(offset == 0){
+			resultList = modelNews.getNewsList(page);
+		} else {
+			resultList = modelNews.getNewsList(offset);
+		}
 		
 		if(resultList == null){
 			return errMsgDB();
@@ -243,11 +257,18 @@ public class ControllerAPI {
 	
 	@RequestMapping(value = "disaster_info", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map<String, Object> disasterInfo(
-			@RequestParam(value="page", required=false, defaultValue="1") int page){
+			@RequestParam(value="page", required=false, defaultValue="1") int page,
+			@RequestParam(value="offset", required=false, defaultValue="0") long offset){
 		logger.info("API/DisasterInfo");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		List<Map<String, Object>> resultList = modelInfo.getInfo(page);
+		List<Map<String, Object>> resultList = null;
+		
+		if(offset == 0){
+			resultList = modelInfo.getInfoList(page);
+		} else {
+			resultList = modelInfo.getInfoList(offset);
+		}
 		
 		if(resultList == null){
 			return errMsgDB();

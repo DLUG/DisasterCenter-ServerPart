@@ -21,9 +21,22 @@ public class ModelInfo extends ModelImpl{
 		}
 	}
 	
-	public List<Map<String, Object>> getInfo(int page){
+	public List<Map<String, Object>> getInfoList(int page){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
+		
+		return getInfoProc(parameters);
+	}
+	
+	public List<Map<String, Object>> getInfoList(long offset){
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("limit_start", 0);
+		parameters.put("offset", offset);
+		
+		return getInfoProc(parameters);
+	}
+	
+	private List<Map<String, Object>> getInfoProc(HashMap<String, Object> parameters){
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
 		try{
