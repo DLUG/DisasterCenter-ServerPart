@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `apps` (
   `secret_code` varchar(255) NOT NULL,
   `loc_lat` double DEFAULT NULL,
   `loc_lng` double DEFAULT NULL,
+  `range` int(11) DEFAULT NULL,
   PRIMARY KEY (`idx`),
   UNIQUE KEY `gcm_id` (`gcm_id`),
   UNIQUE KEY `secret_code` (`secret_code`)
