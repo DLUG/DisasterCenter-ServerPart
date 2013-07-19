@@ -169,6 +169,7 @@ public class ControllerAPI {
 
 			long resultAmount = modelReport.getAmount(lat, lng, range, startDatetime);
 			if(resultAmount != -1){
+				result.put("total_amount", resultAmount);
 				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
@@ -224,6 +225,7 @@ public class ControllerAPI {
 			
 			long resultAmount = modelNews.getAmount();
 			if(resultAmount != -1){
+				result.put("total_amount", resultAmount);
 				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
@@ -281,6 +283,7 @@ public class ControllerAPI {
 			
 			long resultAmount = modelNews.getAmount();
 			if(resultAmount != -1){
+				result.put("total_amount", resultAmount);
 				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
