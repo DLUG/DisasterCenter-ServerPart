@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org/DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="daumsensor">
+	<typeAlias alias="HashMap" type="java.util.HashMap"/>
+	<typeAlias alias="List" type="java.util.List"/>
+	
+	<select id="get_sensor_list" resultClass="HashMap">
+		SELECT * FROM daumsensor_meta;
+	</select>
+	
+	<select id="get_sensor" parameterClass="long" resultClass="HashMap">
+		SELECT * FROM daumsensor_meta WHERE `idx` = $idx$;
+	</select>
+	
+	<insert id="put_sensor" parameterClass="HashMap">
+		INSERT INTO daumsensor_meta (
+			`idx`, 
+			`lat`, 
+			`lng`,
+			`alt`,
+			`obs_time_first`,
+			`obs_time_last`) 
+		VALUES (
+			$idx$, 
+			$lat$, 
+			$lng$,
+			$alt$,
+			"$obs_time_first$",
+			"$obs_time_last$");
+	</insert>
+	
+	<update id="update_daily_weather" parameterClass="HashMap">
+		UPDATE daumsensor_meta SET `lowest_temp` = $lowest_temp$, `lowest_humidity` = $lowest_humidity$;
+	</update>
+	
+	<delete id="flush_sensor">
+		DELETE FROM daumsensor_meta;
+	</delete>
+</sqlMap>

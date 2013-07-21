@@ -10,4 +10,5 @@
 	<sqlMap resource="ibatis/sqlmaps/info.xml"/>
 	<sqlMap resource="ibatis/sqlmaps/news.xml"/>
 	<sqlMap resource="ibatis/sqlmaps/reports.xml"/>
+	<sqlMap resource="ibatis/sqlmaps/daumsensor.xml"/>
 </sqlMapConfig>
