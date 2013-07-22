@@ -2,13 +2,14 @@
 <!DOCTYPE sqlMap
 	PUBLIC "-//ibatis.apache.org/DTD SQL Map 2.0//EN"
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
-	
-<sqlMap namespace="news">
+
+<sqlMap namespace="messages">
 	<typeAlias alias="HashMap" type="java.util.HashMap"/>
 	<typeAlias alias="List" type="java.util.List"/>
 	
-	<select id="get_news_list" parameterClass="HashMap" resultClass="HashMap">
-		SELECT * FROM news
+	<select id="get_messages_list" parameterClass="HashMap" resultClass="HashMap">
+	
+		SELECT * FROM messages 
 		
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="offset">
@@ -21,24 +22,11 @@
 		ORDER BY idx DESC LIMIT $limit_start$, $limit_duration$;
 	</select>
 	
-	<select id="get_news" parameterClass="long" resultClass="HashMap">
-		SELECT * FROM news WHERE `idx` = $idx$;
+	<select id="get_messages" parameterClass="long" resultClass="HashMap">
+		SELECT * FROM messages WHERE `idx` = $idx$;
 	</select>
 	
 	<select id="get_amount" resultClass="long">
-		SELECT COUNT(*) AS amount FROM `news`
+		SELECT COUNT(*) AS amount FROM `messages`
 	</select>
-	
-	<insert id="put_news_without_loc" parameterClass="HashMap">
-		INSERT INTO news (
-			`type_disaster`,
-			`title`,
-			`content`,
-			`datetime`) 
-		VALUES (
-			$type_disaster$, 
-			"$title$", 
-			"$content$",
-			"$datetime$");
-	</insert>
 </sqlMap>

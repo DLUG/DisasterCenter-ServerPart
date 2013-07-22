@@ -21,12 +21,26 @@ public abstract class ServiceImpl extends TimerTask implements Runnable{
 		this.serviceName = serviceName;
 		
 		Logger = new ServiceLogger();
+		
+		System.out.println("INFO_SERVICE : Waiting 10 Seconds");
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void run() {
 		Logger.info("Start");
 		
+		process(getSqlMapClientTemplate());
+		Logger.info("Finish");	
+	}
+	
+	protected SqlMapClientTemplate getSqlMapClientTemplate() {
 		Properties jdbcProperty = new Properties();
 		try {
 			jdbcProperty.load(this.getClass().getClassLoader().getResourceAsStream("jdbc.property"));
@@ -54,10 +68,9 @@ public abstract class ServiceImpl extends TimerTask implements Runnable{
 		sqlMapClientTemplate.setDataSource(dataSource);
 		sqlMapClientTemplate.setSqlMapClient(sqlMapClient);
 		
-		process(sqlMapClientTemplate);
-		Logger.info("Finish");	
+		return sqlMapClientTemplate;
 	}
-	
+
 	protected abstract void process(SqlMapClientTemplate sqlMapClientTemplate);
 	
 	public String getServiceName(){
@@ -71,6 +84,10 @@ public abstract class ServiceImpl extends TimerTask implements Runnable{
 		
 		public void debug(String message){
 			System.out.println("DEBUG_SERVICE : " + serviceName + " - " + message);
+		}
+		
+		public void error(String message){
+			System.out.println("ERROR_SERVICE : " + serviceName + " - " + message);
 		}
 	}
 }

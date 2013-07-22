@@ -11,7 +11,7 @@
 		SELECT * FROM daumsensor_meta;
 	</select>
 	
-	<select id="get_sensor" parameterClass="long" resultClass="HashMap">
+	<select id="get_sensor" parameterClass="HashMap" resultClass="HashMap">
 		SELECT * FROM daumsensor_meta WHERE `idx` = $idx$;
 	</select>
 	

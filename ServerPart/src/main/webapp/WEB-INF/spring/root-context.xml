@@ -6,5 +6,6 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
 	<bean id="serviceGetterDaumSensorData" class="org.dlug.disastercenter.service.ServiceGetterDaumSensorData" />
+	<bean id="serviceNewsCrawler" class="org.dlug.disastercenter.service.ServiceNewsCrawler" />
 	<bean id="serviceDaily" class="org.dlug.disastercenter.service.ServiceDaily" />
 </beans>

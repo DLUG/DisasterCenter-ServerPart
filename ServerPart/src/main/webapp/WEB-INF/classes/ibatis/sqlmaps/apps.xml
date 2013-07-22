@@ -8,18 +8,38 @@
 	<typeAlias alias="List" type="java.util.List"/>
 	
 	<select id="get_app" parameterClass="HashMap" resultClass="HashMap">
-		SELECT * FROM apps WHERE `gcm_id` = "$gcm_id$";
+		SELECT * FROM apps WHERE `uuid` = "$uuid$";
 	</select>
 	
 	<insert id="put_app" parameterClass="HashMap">
-		INSERT INTO apps (`gcm_id`, `crypt_key`, `secret_code`) VALUES ("$gcm_id$", $crypt_key$, "$secret_code$");
+		INSERT INTO apps (
+			`gcm_id`, `uuid`, `crypt_key`, `secret_code`) 
+		VALUES (
+			"$gcm_id$", "$uuid$", $crypt_key$, "$secret_code$");
 	</insert>
 	
 	<delete id="delete_app" parameterClass="HashMap">
+		DELETE FROM apps WHERE `uuid` = "$uuid$";
+	</delete>
+	
+	<delete id="delete_app_with_gcmid" parameterClass="HashMap">
 		DELETE FROM apps WHERE `gcm_id` = "$gcm_id$";
 	</delete>
 	
 	<update id="put_location" parameterClass="HashMap">
-		UPDATE apps SET `loc_lat` = $loc_lat$, `loc_lng` = $loc_lng$ WHERE gcm_id = "$gcm_id$";
+		UPDATE apps SET `loc_lat` = $loc_lat$, `loc_lng` = $loc_lng$, `update_datetime` = "$update_datetime$" WHERE uuid = "$uuid$";
+	</update>
+	
+	<update id="setting_alarmrange" parameterClass="HashMap">
+		UPDATE apps SET `range` = $range$ WHERE uuid = "$uuid$";
+	</update>
+	
+	
+	<update id="update_gcmid" parameterClass="HashMap">
+		UPDATE apps SET `gcm_id` = "$gcm_id$" WHERE `uuid` = "$uuid$";
+	</update>
+	
+	<update id="update_gcmid_with_gcmid" parameterClass="HashMap">
+		UPDATE apps SET `gcm_id` = "$new_gcmid$" WHERE `gcm_id` = "$old_gcmid$";
 	</update>
 </sqlMap>

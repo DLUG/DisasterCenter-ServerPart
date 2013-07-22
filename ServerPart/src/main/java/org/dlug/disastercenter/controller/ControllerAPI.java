@@ -1,6 +1,9 @@
 package org.dlug.disastercenter.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,33 +40,75 @@ public class ControllerAPI {
 	@Autowired
 	private ModelReport modelReport;
 	
-	private static final int ERRCODE_DB = 299;
-	private static final int ERRCODE_AUTH = 199;
+	private static final int ERRCODE_DB = -299;
+	private static final int ERRCODE_AUTH = -199;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ControllerAPI.class);
 	
 	@RequestMapping(value = "reg_app", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map<String, Object> regApp(
-			@RequestParam(value="key", required=true) String key){
+			@RequestParam(value="gcm_id", required=true) String gcm_id,
+			@RequestParam(value="uuid", required=true) String uuid,
+			@RequestParam(value="secret_code", required=false, defaultValue="") String secret_code){
 		logger.info("API/RegApp");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		List<Map<String, Object>> tmpApps = modelApp.getApp(key);
+		List<Map<String, Object>> tmpApps = modelApp.getApp(uuid);
 		
 		if(tmpApps == null){
 			return errMsgDB();
 		} else if(tmpApps.size() != 0){
 			logger.info("API/RegApp Exist App");
-			modelApp.removeApp(key);
+			
+			long appIdx = chkPermNgetIdx(uuid, secret_code);
+			if(appIdx == ERRCODE_DB)
+				return errMsgDB();
+			else if (appIdx == ERRCODE_AUTH)
+				return errMsgAuth();
+			
+			if(modelApp.updateGcmId(uuid, gcm_id)){
+				result.put("status", 0);
+				result.put("msg", "Success");
+				result.put("secret_code",secret_code);
+			} else {
+				return errMsgDB();
+			}			
+			
+			return result;
 		}
 		
-		String crypt_key = String.valueOf((int)(Math.random() * 1024 + 1024));
-		String secret_code = hashing(key + crypt_key);
+		modelApp.removeAppWithGcmid(gcm_id);
 		
-		if(modelApp.putApp(key, crypt_key, secret_code)){
+		String crypt_key = String.valueOf((int)(Math.random() * 1024 + 1024));
+		String tmpSecret_code = hashing(uuid + crypt_key);
+		
+		if(modelApp.putApp(gcm_id, uuid, crypt_key, tmpSecret_code)){
 			result.put("status", 0);
 			result.put("msg", "Success");
-			result.put("secret_code",secret_code);
+			result.put("secret_code", tmpSecret_code);
+		} else {
+			return errMsgDB();
+		}
+		
+		return result;
+	}
+
+	@RequestMapping(value = "unreg_app", method = {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody Map<String, Object> unregApp(
+			@RequestParam(value="uuid", required=true) String uuid,
+			@RequestParam(value="secret_code", required=true) String secret_code){
+		logger.info("API/UnregApp");
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		long appIdx = chkPermNgetIdx(uuid, secret_code);
+		if(appIdx == ERRCODE_DB)
+			return errMsgDB();
+		else if (appIdx == ERRCODE_AUTH)
+			return errMsgAuth();
+		
+		if(modelApp.removeApp(uuid)){
+			result.put("status", 0);
+			result.put("msg", "Success");
 		} else {
 			return errMsgDB();
 		}
@@ -73,20 +118,20 @@ public class ControllerAPI {
 	
 	@RequestMapping(value = "put_location", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map<String, Object> putLocation(
-			@RequestParam(value="key", required=true) String key,
+			@RequestParam(value="uuid", required=true) String uuid,
 			@RequestParam(value="secret_code", required=true) String secret_code,
 			@RequestParam(value="lat", required=true) double lat,
 			@RequestParam(value="lng", required=true) double lng){
 		logger.info("API/PutLocation");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		long appIdx = chkPermNgetIdx(key, secret_code);
+		long appIdx = chkPermNgetIdx(uuid, secret_code);
 		if(appIdx == ERRCODE_DB)
 			return errMsgDB();
 		else if (appIdx == ERRCODE_AUTH)
 			return errMsgAuth();
 		
-		if(modelApp.putLocation(key, lat, lng)){
+		if(modelApp.putLocation(uuid, lat, lng)){
 			result.put("status", 0);
 			result.put("msg", "Success");
 		} else {
@@ -98,7 +143,7 @@ public class ControllerAPI {
 	
 	@RequestMapping(value = "report_disaster", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map<String, Object> reportDisaster(
-			@RequestParam(value="key", required=true) String key,
+			@RequestParam(value="uuid", required=true) String uuid,
 			@RequestParam(value="secret_code", required=true) String secret_code,
 			@RequestParam(value="lat", required=true) double lat,
 			@RequestParam(value="lng", required=true) double lng,
@@ -108,7 +153,7 @@ public class ControllerAPI {
 		logger.info("API/ReportDisaster");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		long appIdx = chkPermNgetIdx(key, secret_code);
+		long appIdx = chkPermNgetIdx(uuid, secret_code);
 		if(appIdx == ERRCODE_DB)
 			return errMsgDB();
 		else if (appIdx == ERRCODE_AUTH)
@@ -184,7 +229,7 @@ public class ControllerAPI {
 				
 				Date datetime = (Date) item.get("datetime");
 				
-				tmpItem.put("timestamp", datetime.getTime() / 1000);
+				tmpItem.put("timestamp", datetime.getTime());
 				tmpItem.put("type_report", item.get("type_report"));
 				tmpItem.put("type_disaster", item.get("type_disaster"));
 				tmpItem.put("content", item.get("content"));
@@ -243,10 +288,27 @@ public class ControllerAPI {
 				
 				Date datetime = (Date) item.get("datetime");
 				
-				tmpItem.put("timestamp", datetime.getTime() / 1000);
+				tmpItem.put("timestamp", datetime.getTime());
 				tmpItem.put("type_disaster", item.get("type_disaster"));
-				tmpItem.put("title", item.get("title"));
-				tmpItem.put("content", item.get("content"));
+				
+				String title = (String) item.get("title");
+				try {
+					title = URLDecoder.decode(title, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				
+				tmpItem.put("title", title);
+				
+				String content = (String) item.get("content");
+				try {
+					content = URLDecoder.decode(content, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				tmpItem.put("content", content);
 				data.add(tmpItem);
 			}
 			result.put("data", data);
@@ -298,7 +360,7 @@ public class ControllerAPI {
 				
 				Date datetime = (Date) item.get("datetime");
 				
-				tmpItem.put("timestamp", datetime.getTime() / 1000);
+				tmpItem.put("timestamp", datetime.getTime());
 				tmpItem.put("title", item.get("title"));
 				tmpItem.put("content", item.get("content"));
 				data.add(tmpItem);
@@ -309,12 +371,34 @@ public class ControllerAPI {
 		return result;
 	}
 	
+	@RequestMapping(value = "setting_alarmrange", method = {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody Map<String, Object> settingAlarmRange(
+			@RequestParam(value="uuid", required=true) String uuid,
+			@RequestParam(value="secret_code", required=true) String secret_code,
+			@RequestParam(value="range", required=true) double range){
+		logger.info("API/SettingAlarmRange");
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		long appIdx = chkPermNgetIdx(uuid, secret_code);
+		if(appIdx == ERRCODE_DB)
+			return errMsgDB();
+		else if (appIdx == ERRCODE_AUTH)
+			return errMsgAuth();
+		
+		if(modelApp.settingAlarmRange(uuid, range)){
+			result.put("status", 0);
+			result.put("msg", "Success");
+		} else {
+			return errMsgDB();
+		}
+		
+		return result;
+	}
 	
+// ========= Utility =========
 	
-	
-	
-	private long chkPermNgetIdx(String key, String secret_code){
-		List<Map<String, Object>> tmpApps = modelApp.getApp(key);
+	private long chkPermNgetIdx(String uuid, String secret_code){
+		List<Map<String, Object>> tmpApps = modelApp.getApp(uuid);
 		
 		if(tmpApps == null){
 			return ERRCODE_DB;
@@ -325,7 +409,7 @@ public class ControllerAPI {
 		Map<String, Object> tmpApp = tmpApps.get(0);
 		
 		int crypt_key = (Integer) tmpApp.get("crypt_key");
-		String tmpSecretCode = hashing(key + crypt_key);
+		String tmpSecretCode = hashing(uuid + crypt_key);
 		
 		if(!tmpSecretCode.equals(secret_code)){
 			return ERRCODE_AUTH;

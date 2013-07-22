@@ -63,7 +63,7 @@ public class ApiDaumSensor {
 		
 		String startDatetime = dateFormatDaumForQuery.format(startCal.getTime());
 		String endDatetime = dateFormatDaumForQuery.format(endCal.getTime());
-		String query = "SELECT * FROM sensorRecortCollection WHEN observationTime > " + startDatetime 
+		String query = "SELECT * FROM sensorRecortCollection WHERE observationTime > " + startDatetime 
 				+ " AND observationTime < " + endDatetime
 				+ " SORT temperature DESC LIMIT 0, 1;";
 
@@ -81,7 +81,7 @@ public class ApiDaumSensor {
 		
 		String startDatetime = dateFormatDaumForQuery.format(startCal.getTime());
 		String endDatetime = dateFormatDaumForQuery.format(endCal.getTime());
-		String query = "SELECT * FROM sensorRecortCollection WHEN observationTime > " + startDatetime 
+		String query = "SELECT * FROM sensorRecortCollection WHERE observationTime > " + startDatetime 
 				+ " AND observationTime < " + endDatetime
 				+ " SORT humidity ASC LIMIT 0, 1;";
 
@@ -99,7 +99,7 @@ public class ApiDaumSensor {
 		
 		String startDatetime = dateFormatDaumForQuery.format(startCal.getTime());
 		String endDatetime = dateFormatDaumForQuery.format(endCal.getTime());
-		String query = "SELECT * FROM sensorRecortCollection WHEN observationTime > " + startDatetime 
+		String query = "SELECT * FROM sensorRecortCollection WHERE observationTime > " + startDatetime 
 				+ " AND observationTime < " + endDatetime
 				+ " SORT temperature ASC LIMIT 0, 1;";
 
@@ -113,7 +113,7 @@ public class ApiDaumSensor {
 		Date startDatetime = new Date(startTimestamp);
 		
 		String startDatetimeString = dateFormatDaumForQuery.format(startDatetime);
-		String query = "SELECT * FROM sensorRecordCollection WHEN temperature > 33 AND observationTime > " + startDatetimeString;
+		String query = "SELECT * FROM sensorRecordCollection WHERE temperature > 330 AND observationTime > " + startDatetimeString;
 		
 		return getJSON(query);
 	}
@@ -125,7 +125,7 @@ public class ApiDaumSensor {
 		Date startDatetime = new Date(startTimestamp);
 		
 		String startDatetimeString = dateFormatDaumForQuery.format(startDatetime);
-		String query = "SELECT * FROM sensorRecordCollection WHEN windSpeed > 14 AND observationTime > " + startDatetimeString;
+		String query = "SELECT * FROM sensorRecordCollection WHERE windSpeed > 140 AND observationTime > " + startDatetimeString;
 		
 		return getJSON(query);
 	}
