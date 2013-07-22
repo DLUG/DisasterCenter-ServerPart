@@ -21,32 +21,38 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 
 public final class ServiceGcm extends ServiceImpl{
+	private static final ServiceGcm instance = new ServiceGcm();
+	
 	private static final int MULTICAST_SIZE = 1000;
 	private String gcm_simple_key = "";
-	private Sender sender;
+	private static Sender sender;
 
 	private static final Executor threadPool = Executors.newFixedThreadPool(5);
+	
+	public static ServiceGcm getInstance(){
+		return instance;
+	}
 	
 	private ServiceGcm(){
 		super("GcmService");
 
 		Properties gcmProperty = new Properties();
 		try {
-			gcmProperty.load(this.getClass().getClassLoader().getResourceAsStream("jdbc.property"));
+			gcmProperty.load(this.getClass().getClassLoader().getResourceAsStream("gcm.property"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
 		gcm_simple_key = gcmProperty.getProperty("gcm.simple_api_key");
-
+		System.out.println("GCM_KEy: " + gcm_simple_key);
 		sender = new Sender(gcm_simple_key);
 	}
 
-	public void sendReport(List<String> listGcmId, Map<String, String> messages){
+	public String sendReport(List<String> listGcmId, Map<String, String> messages){
 		Builder messageBuilder = new Message.Builder()
-		.collapseKey("")
+//		.collapseKey("")
 		.timeToLive(1800)
- 		.delayWhileIdle(true)
+ 		.delayWhileIdle(false)
  		.dryRun(true)
  		.restrictedPackageName("org.dlug.disastercenter");
 
@@ -71,6 +77,7 @@ public final class ServiceGcm extends ServiceImpl{
 				e.printStackTrace();
 			}
 			Logger.info("Sent message to one device: " + result);
+			return "Sent message to one device: " + result;
 		} else {
 			// send a multicast message using JSON
 			// must split in chunks of 1000 devices (GCM limit)
@@ -89,6 +96,8 @@ public final class ServiceGcm extends ServiceImpl{
 				}
 			}
 		}
+		
+		return "";
 	}
 
 	private void asyncSend(List<String> partialDevices, final Message message) {

@@ -14,16 +14,16 @@ request.setCharacterEncoding("UTF-8");
 </h1>
 
 <form method="GET" action="./send_test_msg">
-	ReportId: <select name="report_id">
+	ReportId: <select name="report_idx">
 <c:forEach items="${report}" var="item">
 		<option value="${item.idx}">${item.label}</option>
 </c:forEach>
-	</select>
-	GcmId: <select name="gcm_id">
-<c:forEach items="${gcm_n_app}" var="item">
-		<option value="${item.app_idx}">${item.gcm_id}</option>
+	</select><br>
+	GcmId: <select name="app_idx">
+<c:forEach items="${app}" var="item">
+		<option value="${item.idx}">${item.label}</option>
 </c:forEach>
-	</select>
+	</select><br>
 	<input type="submit"></input>
 </form>
 

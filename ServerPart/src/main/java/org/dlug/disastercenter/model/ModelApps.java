@@ -24,6 +24,30 @@ public class ModelApps extends ModelImpl{
 		}
 	}
 	
+	public Map<String, Object> getAppWithIdx(long idx){
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("idx", idx);
+		
+		try{
+			Map<String, Object> result = (Map<String, Object>)sqlMapClientTemplate.queryForObject("apps.get_app_with_idx", parameters);
+			return result;
+		} catch (DataAccessException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Map<String, Object>> getAppList(){
+		try{
+			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("apps.get_app_list");
+			return result;
+		} catch (DataAccessException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 	public boolean removeApp(String uuid){
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("uuid", uuid);

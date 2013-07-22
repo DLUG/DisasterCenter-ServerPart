@@ -22,14 +22,6 @@ public abstract class ServiceImpl extends TimerTask implements Runnable{
 		
 		Logger = new ServiceLogger();
 		
-		System.out.println("INFO_SERVICE : Waiting 10 Seconds");
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	@Override

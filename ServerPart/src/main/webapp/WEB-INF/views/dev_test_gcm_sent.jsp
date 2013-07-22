@@ -12,6 +12,6 @@ request.setCharacterEncoding("UTF-8");
 <h1>
 	메세지 발송 결과입니다.
 </h1>
-${message}
+${result}
 </body>
 </html>
