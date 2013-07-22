@@ -14,4 +14,11 @@ public abstract class ServicePeriodImpl extends ServiceImpl{
 		timer = new Timer();
 		timer.scheduleAtFixedRate(this, 0, period);
 	}
+	
+	@Override
+	public void finalize() throws Throwable{
+		timer.cancel();
+		
+		super.finalize();
+	}
 }

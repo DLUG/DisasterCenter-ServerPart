@@ -421,7 +421,7 @@ public class ControllerAPI {
 	private Map<String, Object> errMsgEmpty(){
 		Map<String, Object> result = new HashMap<String, Object>();
 		logger.info("API Data Empty");
-		result.put("status", 200);
+		result.put("status", 0);
 		result.put("msg", "Data Empty");
 		
 		return result;

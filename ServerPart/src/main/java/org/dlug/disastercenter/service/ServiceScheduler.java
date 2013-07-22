@@ -54,4 +54,11 @@ public class ServiceScheduler extends TimerTask{
 			}
 		}
 	}
+	
+	@Override
+	public void finalize() throws Throwable{
+		timer.cancel();
+		
+		super.finalize();
+	}
 }

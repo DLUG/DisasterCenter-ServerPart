@@ -16,7 +16,7 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public ServiceGetterDaumSensorData(){
-		super("ServiceGetterDaumSensorData", 60000);
+		super("ServiceGetterDaumSensorData", 300000);
 	}
 	
 	@Override

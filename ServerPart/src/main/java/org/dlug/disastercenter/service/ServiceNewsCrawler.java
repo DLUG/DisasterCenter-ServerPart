@@ -26,7 +26,7 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 	
 	public ServiceNewsCrawler(){
-		super("ServiceNewsCrawler", 60000);
+		super("ServiceNewsCrawler", 300000);
 	}
 	
 	@Override
@@ -97,7 +97,7 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 					
 					if(type_disaster != 0){
 						String content = article.getChild("description").get(0).getValue()
-								+ "<br>\n<br>\nURL: " + article.getChild("link").get(0).getValue();
+								+ "<br>\n<br>\n<a href=\"" + article.getChild("link").get(0).getValue() + "\">원문보기</a>";
 						
 						Map<String, Object> tmpArticle = new HashMap<String, Object>();
 						
