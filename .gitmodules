@@ -1,0 +1,6 @@
+[submodule "gcm"]
+	path = gcm
+	url = https://code.google.com/p/gcm/
+[submodule "DisasterCenter-Common"]
+	path = DisasterCenter-Common
+	url = https://github.com/DLUG/DisasterCenter-Common.git
