@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org/DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="service_kma_target">
+	<typeAlias alias="HashMap" type="java.util.HashMap"/>
+	<typeAlias alias="List" type="java.util.List"/>
+	
+	<select id="get_target_list" resultClass="HashMap">
+		SELECT * FROM service_kma_target;
+	</select>
+	
+	<select id="get_target_list_with_kmacoord" resultClass="HashMap">
+		SELECT * FROM service_kma_target WHERE `kma_x` = $kma_x$ AND `kma_y` = $kma_y$;
+	</select>
+	
+	<insert id="put_target" parameterClass="HashMap">
+		INSERT INTO service_kma_target (`kma_x`, `kma_y`) VALUES ($kma_x$, $kma_y$); 
+	</insert>
+</sqlMap>

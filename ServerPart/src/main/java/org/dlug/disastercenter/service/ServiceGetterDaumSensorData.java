@@ -34,10 +34,10 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 				long sensor_idx = (Long) itemHandler.get("resourceId");
 				long temperature = (Long) itemHandler.get("temperature");
 				
-				if(temperature > 350)
-					content += "호우 경보!<br>\n";
-				else 
-					content += "호우 주의보!<br>\n";
+				if(temperature > 35)
+					content += "폭염 경보!<br>\n";
+				else if(temperature > 33)
+					content += "폭염 주의보!<br>\n";
 				
 				content += "현재 기온: " + (temperature / 10) + "<br>\n";
 				

@@ -7,10 +7,10 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
-public class ServiceDailyMidnight extends ServiceImpl {
+public class ServiceDailyMidnightDaumSensor extends ServiceImpl {
 
-	public ServiceDailyMidnight() {
-		super("Daily Midnight Service");
+	public ServiceDailyMidnightDaumSensor() {
+		super("Daily Midnight Service - DaumSensor");
 		
 		ServiceScheduler.getInstance().setScheduler(this, 00, 00);
 	}

@@ -18,7 +18,7 @@
 			</isNotNull>
 		</dynamic>
 		
-		ORDER BY idx DESC LIMIT $limit_start$, $limit_duration$;
+		ORDER BY datetime DESC LIMIT $limit_start$, $limit_duration$;
 	</select>
 	
 	<select id="get_news" parameterClass="long" resultClass="HashMap">

@@ -14,8 +14,11 @@ import java.util.Map;
 
 import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelInfo;
+import org.dlug.disastercenter.model.ModelKmaTarget;
 import org.dlug.disastercenter.model.ModelNews;
 import org.dlug.disastercenter.model.ModelReport;
+import org.dlug.disastercenter.service.CoordinateConverter;
+import org.dlug.disastercenter.service.CoordinateConverter.CoordKma;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,9 @@ public class ControllerAPI {
 	
 	@Autowired
 	private ModelReport modelReport;
+	
+	@Autowired
+	private ModelKmaTarget modelKmaTarget;
 	
 	private static final int ERRCODE_DB = -299;
 	private static final int ERRCODE_AUTH = -199;
@@ -134,6 +140,14 @@ public class ControllerAPI {
 		if(modelApp.putLocation(uuid, lat, lng)){
 			result.put("status", 0);
 			result.put("msg", "Success");
+			
+			CoordKma kmaCoord = CoordinateConverter.latlng2Kma(lat, lng);
+			List<Map<String, Object>> listTarget = modelKmaTarget.getTargetList(kmaCoord.x, kmaCoord.y);
+			
+			if(listTarget.size() == 0){
+				modelKmaTarget.putTarget(kmaCoord.x, kmaCoord.y);
+				
+			}
 		} else {
 			return errMsgDB();
 		}

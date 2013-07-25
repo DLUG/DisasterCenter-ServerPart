@@ -9,10 +9,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
-public class ServiceDaily extends ServicePeriodImpl{
+public class ServiceDailyDaumSensor extends ServicePeriodImpl{
 	public final static SimpleDateFormat dateFormatMySql = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	public ServiceDaily(){
-		super("EveryDayService", ServicePeriodImpl.MSEC_A_DAY);
+	public ServiceDailyDaumSensor(){
+		super("EveryDayService - DaumSensor", ServicePeriodImpl.MSEC_A_DAY);
 	}
 	
 	@Override

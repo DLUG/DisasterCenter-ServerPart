@@ -18,6 +18,8 @@ public abstract class ServicePeriodImpl extends ServiceImpl{
 	@Override
 	public void finalize() throws Throwable{
 		timer.cancel();
+		timer.purge();
+		timer = null;
 		
 		super.finalize();
 	}

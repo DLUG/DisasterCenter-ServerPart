@@ -32,11 +32,11 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 	@Override
 	protected void process(SqlMapClientTemplate sqlMapClientTemplate) {
 		
-		List<Map<String, Object>> rssList = sqlMapClientTemplate.queryForList("news_rss.get_rss_list");
+		List<Map<String, Object>> rssList = sqlMapClientTemplate.queryForList("service_news.get_rss_list");
 		
 		for(Map<String, Object> item: rssList){
 			String requestUrl = (String) item.get("rss_url");
-			System.out.println(requestUrl);
+			Logger.info("Checking RSS: " + requestUrl);
 			try {
 				URL url;
 				url = new URL(requestUrl);
@@ -57,8 +57,6 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 				
 				List<XMLElement> articleList = xmlChannel.getChild("item");
 				XMLElement[] list = xmlChannel.getChilds();
-				
-				System.out.println(list.length);
 				
 				for(XMLElement article: articleList){
 					String pubDateString = article.getChild("pubDate").get(0).getValue();
@@ -82,20 +80,43 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 					
 					String title = article.getChild("title").get(0).getValue();
 					int type_disaster = 0;
-					System.out.println("Title: " + title);
+					
 					if(title.contains("장마")
 							|| title.contains("호우주의보")
 							|| title.contains("호우특보")
 							|| title.contains("호우경보")
-							|| title.contains("침수")
 							|| title.contains("폭우")
-							|| title.contains("물바다")
 							|| title.contains("집중호우")
 							|| title.contains("장맛비")){
 						type_disaster = 101;
-					}
+					} else if(title.contains("산사태")){
+						type_disaster = 403;
+					} else if(title.contains("침수")
+							|| title.contains("물바다")
+							|| title.contains("홍수")){
+						type_disaster = 102;
+					} else if(title.contains("폭염")
+							|| title.contains("불볕더위")
+							|| title.contains("폭서")
+							|| title.contains("무더위")){
+						type_disaster = 301;
+					} else if(title.contains("열대야")){
+						type_disaster = 302;
+					} else if(title.contains("산불")){
+						type_disaster = 502;
+					} else if(title.contains("화재")){
+						type_disaster = 501;
+					} else if(title.contains("태풍")
+							|| title.contains("허리케인")){
+						type_disaster = 104;
+					} else if(title.contains("지진")){
+						type_disaster = 404;
+					} else if(title.contains("전쟁")){
+						type_disaster = 801;
+					} 
 					
 					if(type_disaster != 0){
+						Logger.info("Crawled Article: " + title);
 						String content = article.getChild("description").get(0).getValue()
 								+ "<br>\n<br>\n<a href=\"" + article.getChild("link").get(0).getValue() + "\">원문보기</a>";
 						
@@ -126,7 +147,7 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 					parameters.put("update_datetime", sdf.format(rssPubDate));
 					parameters.put("idx", item.get("idx"));
 					
-					sqlMapClientTemplate.update("news_rss.update_datetime", parameters);
+					sqlMapClientTemplate.update("service_news.update_datetime", parameters);
 				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();

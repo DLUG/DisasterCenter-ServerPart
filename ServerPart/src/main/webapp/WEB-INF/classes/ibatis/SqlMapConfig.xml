@@ -12,5 +12,6 @@
 	<sqlMap resource="ibatis/sqlmaps/reports.xml"/>
 	<sqlMap resource="ibatis/sqlmaps/daumsensor.xml"/>
 	<sqlMap resource="ibatis/sqlmaps/messages.xml"/>
-	<sqlMap resource="ibatis/sqlmaps/news_rss.xml"/>
+	<sqlMap resource="ibatis/sqlmaps/service_news.xml"/>
+	<sqlMap resource="ibatis/sqlmaps/service_kma_target.xml"/>
 </sqlMapConfig>
