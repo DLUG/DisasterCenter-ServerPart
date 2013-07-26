@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.XMLDocument;
+import org.dlug.disastercenter.common.XMLElement;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

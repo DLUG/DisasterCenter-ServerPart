@@ -63,13 +63,25 @@ public class ModelReport extends ModelImpl{
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		
 		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
+		parameters.put("limit_duration", PAGE_AMOUNT);
+		
 		return getReportProc(parameters, 0, 0, 0, null);
+	}
+	
+	public List<Map<String, Object>> getReportList(double lat, double lng, double rangeKM, int type_disaster, Date startDatetime){
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		
+		parameters.put("type_disaster", type_disaster);
+		
+		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
 	}
 	
 	public List<Map<String, Object>> getReportList(int page, double lat, double lng, double rangeKM, Date startDatetime){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		
 		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
+		parameters.put("limit_duration", PAGE_AMOUNT);
+		
 		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
 	}
 	
@@ -78,13 +90,12 @@ public class ModelReport extends ModelImpl{
 		
 		parameters.put("limit_start", 0);
 		parameters.put("offset", offset);
+		parameters.put("limit_duration", PAGE_AMOUNT);
 		
 		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
 	}	
 	
 	private List<Map<String, Object>> getReportProc(HashMap<String, Object> parameters, double lat, double lng, double rangeKM, Date startDatetime){
-		parameters.put("limit_duration", PAGE_AMOUNT);
-		
 		if(rangeKM != 0){
 			parameters.put("lat_start", lat - (rangeKM * DEGREE_PER_KM_LAT));
 			parameters.put("lat_end", lat + (rangeKM * DEGREE_PER_KM_LAT));

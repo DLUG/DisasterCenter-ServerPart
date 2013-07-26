@@ -5,14 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ConstantAlertLimit;
+import org.dlug.disastercenter.common.DisasterType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
-	private static final int TYPE_WATCH = 10000;
-	private static final int TYPE_ALERT = 10001;
-	
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public ServiceGetterDaumSensorData(){
@@ -35,11 +34,13 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 				long temperature = (Long) itemHandler.get("temperature");
 				
 				if(temperature > 35)
-					content += "폭염 경보!<br>\n";
+					content += "[Daum기상센서] 폭염경보 기준 온도 초과!<br>\n<br>\n"
+								+ "현재 폭염경보 기준 온도인 " + ConstantAlertLimit.TEMP_HIGH_ALERT + "도가 넘었습니다. 일사병에 주의해주시기바랍니다.<br>\n<br>\n";
 				else if(temperature > 33)
-					content += "폭염 주의보!<br>\n";
+					content += "[Daum기상센서] 폭염주의보 기준 온도 초과!<br>\n<br>\n"
+							+ "현재 폭염주의보 기준 온도인 " + ConstantAlertLimit.TEMP_HIGH_WATCH + "도가 넘었습니다. 일사병에 주의해주시기바랍니다.<br>\n<br>\n";
 				
-				content += "현재 기온: " + (temperature / 10) + "<br>\n";
+				content += "현재 기온: " + (temperature) + "<br>\n";
 				
 				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put("idx", sensor_idx);
@@ -53,10 +54,10 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 				report.put("loc_accuracy", "1");
 				report.put("loc_name", "");
 				report.put("type_report", 0);
-				if(temperature > 350)
-					report.put("type_disaster", 902);
+				if(temperature > 35)
+					report.put("type_disaster", DisasterType.TEMP_HIGH_ALERT);
 				else 
-					report.put("type_disaster", 901);
+					report.put("type_disaster", DisasterType.TEMP_HIGH_WATCH);
 				
 				report.put("content", content);
 				report.put("datetime", sdf.format(new Date()));
@@ -64,7 +65,5 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 				sqlMapClientTemplate.insert("reports.put_report", report);
 			}
 		}
-		
-//		JSONArray listWatchWind = ApiDaumSensor.getJSONSensorFasterWindThanWatchLimit(period);
 	}
 }

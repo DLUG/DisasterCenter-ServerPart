@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.CoordinateConverter;
+import org.dlug.disastercenter.common.CoordinateConverter.CoordKma;
 import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelInfo;
 import org.dlug.disastercenter.model.ModelKmaTarget;
 import org.dlug.disastercenter.model.ModelNews;
 import org.dlug.disastercenter.model.ModelReport;
-import org.dlug.disastercenter.service.CoordinateConverter;
-import org.dlug.disastercenter.service.CoordinateConverter.CoordKma;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

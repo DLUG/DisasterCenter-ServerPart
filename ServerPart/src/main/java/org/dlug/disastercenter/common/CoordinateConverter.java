@@ -1,4 +1,4 @@
-package org.dlug.disastercenter.service;
+package org.dlug.disastercenter.common;
 
 public class CoordinateConverter {
 	private final static double LAT_DEGREE_PER_KM = 0.008983;
@@ -32,7 +32,7 @@ public class CoordinateConverter {
 				
 		CoordKma result = new CoordKma();
 		
-		result.x = (int) (defaultX / (LNG_DEGREE_PER_KMA_X + (defaultY * INCREASE_RATIO_PER_LAT)));
+		result.x = (int) ((defaultX + (defaultY * INCREASE_RATIO_PER_LAT)) / LNG_DEGREE_PER_KMA_X);
 		result.y = (int) (defaultY / LAT_DEGREE_PER_KMA_Y);
 		
 		return result;
@@ -40,11 +40,7 @@ public class CoordinateConverter {
 	
 	public static CoordLatLng Kma2latlng(int kmaX, int kmaY){
 		double defaultY = kmaY * LAT_DEGREE_PER_KMA_Y;
-		double defaultX = (kmaX * (LNG_DEGREE_PER_KMA_X + (defaultY * INCREASE_RATIO_PER_LAT)));
-		 
-		
-//		double defaultX = longitude - 123.3102;
-//		double defaultY = latitude - 31.6518;
+		double defaultX = (kmaX * (LNG_DEGREE_PER_KMA_X) - (defaultY * INCREASE_RATIO_PER_LAT));
 				
 		CoordLatLng result = new CoordLatLng();
 		

@@ -26,9 +26,19 @@
 					idx <= $offset$
 				]]>
 			</isNotNull>
+			<isNotNull prepend="AND" property="type_disaster">
+				<![CDATA[
+					type_disaster = $type_disaster$
+				]]> 
+			</isNotNull>	
 		</dynamic>
 
-		ORDER BY idx DESC LIMIT $limit_start$, $limit_duration$;
+		ORDER BY idx DESC 
+		
+		<isNotNull property="limit_start">
+			LIMIT $limit_start$, $limit_duration$		    
+		</isNotNull>
+		;
 	</select>
 	
 	<select id="get_report" parameterClass="long" resultClass="HashMap">
@@ -48,6 +58,11 @@
 					datetime > "$datetime_start$"
 				]]> 
 			</isNotNull>
+			<isNotNull prepend="AND" property="type_disaster">
+				<![CDATA[
+					type_disaster = $type_disaster$
+				]]> 
+			</isNotNull>			
 		</dynamic>
 	</select>
 	

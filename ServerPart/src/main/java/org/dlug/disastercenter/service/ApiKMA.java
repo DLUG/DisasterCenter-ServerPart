@@ -14,7 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dlug.disastercenter.service.CoordinateConverter.CoordKma;
+import org.dlug.disastercenter.common.ConstantAlertLimit;
+import org.dlug.disastercenter.common.CoordinateConverter;
+import org.dlug.disastercenter.common.XMLDocument;
+import org.dlug.disastercenter.common.XMLElement;
+import org.dlug.disastercenter.common.CoordinateConverter.CoordKma;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,19 +37,11 @@ public class ApiKMA {
 		}
 	}
 	
-	public Map<String, Object>getCurrentWeather(double lat, double lng){
-		CoordKma kmaCoord = converter.latlng2Kma(lat, lng); 
-		
+	public Map<String, Object>getCurrentWeather(int kma_x, int kma_y){
 		String query = odamUrl;
 		
-		try {
-			query = URLEncoder.encode(query, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		
-		String requestUrl = query + "?gridx=" + kmaCoord.x + "&gridy=" + kmaCoord.y;
-		
+		String requestUrl = query + "?gridx=" + kma_x + "&gridy=" + kma_y;
+		System.out.println(requestUrl);
 		try {
 			URL url;
 			url = new URL(requestUrl);
@@ -82,16 +78,16 @@ public class ApiKMA {
 		return null;
 	}
 	
+	public Map<String, Object>getCurrentWeather(double lat, double lng){
+		CoordKma kmaCoord = converter.latlng2Kma(lat, lng); 
+		
+		return getCurrentWeather(kmaCoord.x, kmaCoord.y);
+	}
+	
 	public Map<String, Object>getTodayWeather(int kma_x, int kma_y){
 		//Coord kmaCoord = converter.latlng2Kma(lat, lng); 
 		
 		String query = dfsUrl;
-		
-		try {
-			query = URLEncoder.encode(query, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		
 		String requestUrl = query + "?gridx=" + kma_x + "&gridy=" + kma_y;
 		
@@ -160,55 +156,55 @@ public class ApiKMA {
 				if(tmpHumidity > todayMaxHumidity)
 					todayMaxHumidity = tmpHumidity;
 				
-				if(tmpTemp > WeatherAlertLimit.TEMP_HIGH_ALERT && todayAlertHighTempStart == -1){
+				if(tmpTemp > ConstantAlertLimit.TEMP_HIGH_ALERT && todayAlertHighTempStart == -1){
 					todayAlertHighTempStart = tmpHour;
 				}
 				
 				if(todayAlertHighTempStart != -1 && todayAlertHighTempEnd == -1){
-					if(tmpTemp < WeatherAlertLimit.TEMP_HIGH_ALERT)
+					if(tmpTemp < ConstantAlertLimit.TEMP_HIGH_ALERT)
 						todayAlertHighTempEnd = tmpHour;
 				}
 				
-				if(tmpTemp > WeatherAlertLimit.TEMP_HIGH_WATCH && todayWatchHighTempStart  == -1){
+				if(tmpTemp > ConstantAlertLimit.TEMP_HIGH_WATCH && todayWatchHighTempStart  == -1){
 					todayWatchHighTempStart = tmpHour;
 				}
 				
 				if(todayWatchHighTempStart != -1 && todayWatchHighTempEnd == -1){
-					if(tmpTemp < WeatherAlertLimit.TEMP_HIGH_WATCH)
+					if(tmpTemp < ConstantAlertLimit.TEMP_HIGH_WATCH)
 						todayWatchHighTempEnd = tmpHour;
 				}
 				
-				if(tmpTemp < WeatherAlertLimit.TEMP_LOW_ALERT && todayAlertLowTempStart == -1){
+				if(tmpTemp < ConstantAlertLimit.TEMP_LOW_ALERT && todayAlertLowTempStart == -1){
 					todayAlertLowTempStart = tmpHour;
 				}
 				
 				if(todayAlertLowTempStart != -1 && todayAlertLowTempEnd == -1){
-					if(tmpTemp < WeatherAlertLimit.TEMP_LOW_ALERT)
+					if(tmpTemp < ConstantAlertLimit.TEMP_LOW_ALERT)
 						todayAlertLowTempEnd = tmpHour;
 				}
 				
-				if(tmpTemp < WeatherAlertLimit.TEMP_LOW_WATCH && todayWatchLowTempStart  == -1){
+				if(tmpTemp < ConstantAlertLimit.TEMP_LOW_WATCH && todayWatchLowTempStart  == -1){
 					todayWatchLowTempStart = tmpHour;
 				}
 				
 				if(todayWatchLowTempStart != -1 && todayWatchLowTempEnd == -1){
-					if(tmpTemp < WeatherAlertLimit.TEMP_LOW_WATCH)
+					if(tmpTemp < ConstantAlertLimit.TEMP_LOW_WATCH)
 						todayWatchLowTempEnd = tmpHour;
 				}
 				
-				if(tmpRain6Meter > WeatherAlertLimit.RAIN6_HARD_ALERT && todayAlertHardRainStart  == -1){
+				if(tmpRain6Meter > ConstantAlertLimit.RAIN6_HARD_ALERT && todayAlertHardRainStart  == -1){
 					todayAlertHardRainStart = tmpHour;
 				}
 				
-				if(tmpRain6Meter > WeatherAlertLimit.RAIN6_HARD_WATCH && todayWatchHardRainStart  == -1){
+				if(tmpRain6Meter > ConstantAlertLimit.RAIN6_HARD_WATCH && todayWatchHardRainStart  == -1){
 					todayWatchHardRainStart = tmpHour;
 				}
 				
-				if(tmpWindSpeed > WeatherAlertLimit.WIND_FAST_ALERT && todayAlertFastWindStart  == -1){
+				if(tmpWindSpeed > ConstantAlertLimit.WIND_FAST_ALERT && todayAlertFastWindStart  == -1){
 					todayAlertFastWindStart = tmpHour;
 				}
 				
-				if(tmpWindSpeed > WeatherAlertLimit.WIND_FAST_WATCH && todayWatchFastWindStart  == -1){
+				if(tmpWindSpeed > ConstantAlertLimit.WIND_FAST_WATCH && todayWatchFastWindStart  == -1){
 					todayWatchFastWindStart = tmpHour;
 				}
 			}

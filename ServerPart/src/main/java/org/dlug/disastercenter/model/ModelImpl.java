@@ -11,4 +11,8 @@ public abstract class ModelImpl {
 	
 	public final static int PAGE_AMOUNT = 10;
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	public void setSqlMapClientTemplate(SqlMapClientTemplate sqlMapClientTemplate){
+		this.sqlMapClientTemplate = sqlMapClientTemplate;
+	}
 }

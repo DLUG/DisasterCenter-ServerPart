@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dlug.disastercenter.service.CoordinateConverter.CoordLatLng;
+import org.dlug.disastercenter.common.CoordinateConverter;
+import org.dlug.disastercenter.common.CoordinateConverter.CoordLatLng;
+import org.dlug.disastercenter.model.ModelReport;
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 

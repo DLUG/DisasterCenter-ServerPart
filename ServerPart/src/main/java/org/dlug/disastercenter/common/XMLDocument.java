@@ -1,4 +1,4 @@
-package org.dlug.disastercenter.service;
+package org.dlug.disastercenter.common;
 
 import java.io.StringReader;
 
