@@ -48,7 +48,7 @@ public class ServiceScheduler extends TimerTask{
 					&& minutesNow == ((Integer)item.get("minute")).intValue()){
 				ServiceImpl service = (ServiceImpl) item.get("service");
 				System.out.println("INFO_SCHEDULER : Start " + service.getServiceName() 
-						+ "at " + hoursNow + ":" + minutesNow);
+						+ " at " + hoursNow + ":" + minutesNow);
 				
 				new Thread(service).start();
 			}
