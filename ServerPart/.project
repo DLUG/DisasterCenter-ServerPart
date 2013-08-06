@@ -44,4 +44,16 @@
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/java/com</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/gcm/gcm-server/src/com</locationURI>
+		</link>
+		<link>
+			<name>src/main/java/org/dlug/disastercenter/common</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/DisasterCenter-Common/Common/src/org/dlug/disastercenter/common</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

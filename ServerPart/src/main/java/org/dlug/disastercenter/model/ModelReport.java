@@ -6,21 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ConstantCoordinate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ModelReport extends ModelImpl{
-	private final static double DEGREE_PER_KM_LAT = 0.008983;
-	private final static double DEGREE_PER_KM_LNG = 0.015060;
-	
 	public long getAmount(double lat, double lng, double rangeKM, Date startDatetime){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		if(rangeKM != 0){
-			parameters.put("lat_start", lat - (rangeKM * DEGREE_PER_KM_LAT));
-			parameters.put("lat_end", lat + (rangeKM * DEGREE_PER_KM_LAT));
-			parameters.put("lng_start", lng - (rangeKM * DEGREE_PER_KM_LNG));
-			parameters.put("lng_end", lng + (rangeKM * DEGREE_PER_KM_LNG));
+			parameters.put("lat_start", lat - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
+			parameters.put("lat_end", lat + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
+			parameters.put("lng_start", lng - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LNG));
+			parameters.put("lng_end", lng + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LNG));
 		}
 
 		if(startDatetime != null){
@@ -97,10 +95,10 @@ public class ModelReport extends ModelImpl{
 	
 	private List<Map<String, Object>> getReportProc(HashMap<String, Object> parameters, double lat, double lng, double rangeKM, Date startDatetime){
 		if(rangeKM != 0){
-			parameters.put("lat_start", lat - (rangeKM * DEGREE_PER_KM_LAT));
-			parameters.put("lat_end", lat + (rangeKM * DEGREE_PER_KM_LAT));
-			parameters.put("lng_start", lng - (rangeKM * DEGREE_PER_KM_LNG));
-			parameters.put("lng_end", lng + (rangeKM * DEGREE_PER_KM_LNG));
+			parameters.put("lat_start", lat - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
+			parameters.put("lat_end", lat + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
+			parameters.put("lng_start", lng - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LNG));
+			parameters.put("lng_end", lng + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LNG));
 		}
 
 		if(startDatetime != null){

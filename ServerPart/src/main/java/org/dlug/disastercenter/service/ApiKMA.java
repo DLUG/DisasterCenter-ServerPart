@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.dlug.disastercenter.common.ConstantAlertLimit;
-import org.dlug.disastercenter.common.CoordinateConverter;
+import org.dlug.disastercenter.common.CoordinateTools;
 import org.dlug.disastercenter.common.XMLDocument;
 import org.dlug.disastercenter.common.XMLElement;
-import org.dlug.disastercenter.common.CoordinateConverter.CoordKma;
+import org.dlug.disastercenter.common.CoordinateTools.CoordKma;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,11 +29,11 @@ public class ApiKMA {
 	private final static String odamUrl = "http://www.kma.go.kr/wid/queryODAM.jsp";
 //	private final static String apiKey = "DAUM_SENSORQL_DEMO_APIKEY";
 	
-	private static CoordinateConverter converter;
+	private static CoordinateTools converter;
 	
 	public ApiKMA(){
 		if(converter == null){
-			converter = new CoordinateConverter();
+			converter = new CoordinateTools();
 		}
 	}
 	
@@ -41,7 +41,7 @@ public class ApiKMA {
 		String query = odamUrl;
 		
 		String requestUrl = query + "?gridx=" + kma_x + "&gridy=" + kma_y;
-		System.out.println(requestUrl);
+//		System.out.println(requestUrl);
 		try {
 			URL url;
 			url = new URL(requestUrl);
@@ -127,7 +127,7 @@ public class ApiKMA {
 			int todayWatchHardRainStart = -1;
 			int todayAlertHardRainStart = -1;
 			
-			int todayMaxWindSpeed = 0;
+			double todayMaxWindSpeed = 0;
 			int todayWatchFastWindStart = -1;
 			int todayAlertFastWindStart = -1;
 			
@@ -136,10 +136,10 @@ public class ApiKMA {
 			for(int i = 1; i < 8; i++){
 				int tmpHour = Integer.parseInt(xmlDatas.get(i).getChild("hour").get(0).getValue());
 				
-				Double tmpTemp = Double.parseDouble(xmlDatas.get(i).getChild("temp").get(0).getValue());
+				double tmpTemp = Double.parseDouble(xmlDatas.get(i).getChild("temp").get(0).getValue());
 				int tmpHumidity = Integer.parseInt(xmlDatas.get(i).getChild("reh").get(0).getValue());
-				Double tmpRain6Meter = Double.parseDouble(xmlDatas.get(i).getChild("r06").get(0).getValue());
-				int tmpWindSpeed = Integer.parseInt(xmlDatas.get(i).getChild("ws").get(0).getValue());
+				double tmpRain6Meter = Double.parseDouble(xmlDatas.get(i).getChild("r06").get(0).getValue());
+				double tmpWindSpeed = Double.parseDouble(xmlDatas.get(i).getChild("ws").get(0).getValue());
 				
 				if(tmpTemp > todayMaxTemp)
 					todayMaxTemp = tmpTemp;

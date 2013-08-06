@@ -22,11 +22,15 @@
 		ORDER BY idx DESC LIMIT $limit_start$, $limit_duration$;
 	</select>
 	
-	<select id="get_messages" parameterClass="long" resultClass="HashMap">
+	<select id="get_messages" parameterClass="HashMap" resultClass="HashMap">
 		SELECT * FROM messages WHERE `idx` = $idx$;
 	</select>
 	
 	<select id="get_amount" resultClass="long">
 		SELECT COUNT(*) AS amount FROM `messages`
 	</select>
+	
+	<insert id="put_message" parameterClass="HashMap">
+	    INSERT INTO messages (`app_idx`, `report_idx`) VALUES ($app_idx$, $report_idx$);
+	</insert>
 </sqlMap>

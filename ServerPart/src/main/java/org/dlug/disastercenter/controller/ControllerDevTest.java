@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.DisasterType;
 import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelInfo;
 import org.dlug.disastercenter.model.ModelReport;
@@ -80,15 +81,16 @@ public class ControllerDevTest extends ControllerPages{
 	}
 	
 	@RequestMapping(value = "/send_test_msg", method = RequestMethod.GET)
-	public String sendTestMsg(Locale locale, Model model, @RequestParam(value="report_idx", required=true) long reportIdx,
+	public String sendTestMsg(Locale locale, Model model, 
+			@RequestParam(value="report_idx", required=true) long reportIdx,
 			@RequestParam(value="app_idx", required=true) long appIdx) {
 		Map<String, Object> report = modelReport.getReport(reportIdx);
-		Map<String, Object> app = modelApps.getAppWithIdx(appIdx);
+		Map<String, Object> app = modelApps.getApp(appIdx);
 		
 		Map<String, String> gcmMessage = new HashMap<String, String>();
 		gcmMessage.put("report_idx", String.valueOf((Long)report.get("idx")));
 		gcmMessage.put("type_disaster", String.valueOf((Integer)report.get("type_disaster")));
-		gcmMessage.put("type_disaster_string", "테스트");
+		gcmMessage.put("type_disaster_string", "테스트" + DisasterType.code2string((Integer)report.get("type_disaster")));
 		Date datetime = (Date) report.get("datetime");
 		
 		gcmMessage.put("timestamp", String.valueOf(datetime.getTime()));
@@ -96,7 +98,10 @@ public class ControllerDevTest extends ControllerPages{
 		List<String> appList = new ArrayList<String>();
 		appList.add((String) app.get("gcm_id"));
 		
-		String result = ServiceGcm.getInstance().sendReport(appList, gcmMessage);  
+		List<Long> appIdxs = new ArrayList<Long>();
+		appIdxs.add((Long)app.get("idx"));
+		
+		String result = ServiceGcm.getInstance().sendReport(appIdxs, appList, gcmMessage);  
 		
 		model.addAttribute("result", result);
 		

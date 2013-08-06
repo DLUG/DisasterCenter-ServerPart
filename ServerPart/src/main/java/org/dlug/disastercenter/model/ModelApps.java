@@ -6,15 +6,47 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ConstantCoordinate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ModelApps extends ModelImpl{
-	public List<Map<String, Object>> getApp(String uuid){
-		Map<String, String> parameters = new HashMap<String, String>();
+	public Map<String, Object> getApp(String uuid){
+		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("uuid", uuid);
 		
+		return getAppList(parameters).get(0);
+	}
+	
+	public List<Map<String, Object>> getAppList(String uuid){
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("uuid", uuid);
+		
+		return getAppList(parameters);
+	}
+	
+	public Map<String, Object> getApp(long idx){
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("idx", idx);
+		
+		return getAppList(parameters).get(0);
+	}
+	
+	public List<Map<String, Object>> getAppList(double lat, double lng, double rangeKM){
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		
+		if(rangeKM != 0){
+			parameters.put("lat_start", lat - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
+			parameters.put("lat_end", lat + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
+			parameters.put("lng_start", lng - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LNG));
+			parameters.put("lng_end", lng + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LNG));
+		}
+		
+		return getAppList(parameters);
+	}
+	
+	public List<Map<String, Object>> getAppList(Map<String, Object> parameters){
 		try{
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("apps.get_app", parameters);
 			return result;
@@ -24,6 +56,7 @@ public class ModelApps extends ModelImpl{
 		}
 	}
 	
+/*	TODO: Remove
 	public Map<String, Object> getAppWithIdx(long idx){
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("idx", idx);
@@ -36,7 +69,7 @@ public class ModelApps extends ModelImpl{
 			return null;
 		}
 	}
-	
+*/	
 	public List<Map<String, Object>> getAppList(){
 		try{
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("apps.get_app_list");

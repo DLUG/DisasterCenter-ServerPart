@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dlug.disastercenter.common.CoordinateConverter;
-import org.dlug.disastercenter.common.CoordinateConverter.CoordLatLng;
+import org.dlug.disastercenter.common.CoordinateTools;
+import org.dlug.disastercenter.common.CoordinateTools.CoordLatLng;
 import org.dlug.disastercenter.model.ModelReport;
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
@@ -31,7 +31,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			Map<String, Object> todayWeather = apiKMA.getTodayWeather((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 			
 			if(todayWeather.containsKey("alert_high_temp_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 폭염경보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("alert_high_temp_start") + " 시 부터 "
@@ -42,7 +42,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("watch_high_temp_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 폭염주의보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("watch_high_temp_start") + " 시 부터 "
@@ -53,7 +53,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("alert_low_temp_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 한파경보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("alert_low_temp_start") + " 시 부터 "
@@ -64,7 +64,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("watch_low_temp_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 한파주의보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("watch_low_temp_start") + " 시 부터 "
@@ -75,7 +75,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("alert_hard_rain_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 호우경보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("alert_hard_rain_start") + " 시 부터 "
@@ -85,7 +85,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("watch_hard_rain_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 호우주의보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("watch_hard_rain_start") + " 시 부터 "
@@ -95,7 +95,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("alert_fast_wind_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 강풍경보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("alert_fast_wind_start") + " 시 부터 "
@@ -105,7 +105,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 			}
 			
 			if(todayWeather.containsKey("watch_fast_wind_start")){
-				CoordLatLng latlng = CoordinateConverter.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
 				String content = "[기상청] 강풍주의보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("watch_fast_wind_start") + " 시 부터 "

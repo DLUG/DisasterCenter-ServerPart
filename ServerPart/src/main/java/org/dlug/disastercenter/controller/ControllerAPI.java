@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dlug.disastercenter.common.CoordinateConverter;
-import org.dlug.disastercenter.common.CoordinateConverter.CoordKma;
+import org.dlug.disastercenter.common.CoordinateTools;
+import org.dlug.disastercenter.common.CoordinateTools.CoordKma;
 import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelInfo;
 import org.dlug.disastercenter.model.ModelKmaTarget;
@@ -59,7 +59,7 @@ public class ControllerAPI {
 		logger.info("API/RegApp");
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		List<Map<String, Object>> tmpApps = modelApp.getApp(uuid);
+		List<Map<String, Object>> tmpApps = modelApp.getAppList(uuid);
 		
 		if(tmpApps == null){
 			return errMsgDB();
@@ -141,7 +141,7 @@ public class ControllerAPI {
 			result.put("status", 0);
 			result.put("msg", "Success");
 			
-			CoordKma kmaCoord = CoordinateConverter.latlng2Kma(lat, lng);
+			CoordKma kmaCoord = CoordinateTools.latlng2Kma(lat, lng);
 			List<Map<String, Object>> listTarget = modelKmaTarget.getTargetList(kmaCoord.x, kmaCoord.y);
 			
 			if(listTarget.size() == 0){
@@ -412,7 +412,7 @@ public class ControllerAPI {
 // ========= Utility =========
 	
 	private long chkPermNgetIdx(String uuid, String secret_code){
-		List<Map<String, Object>> tmpApps = modelApp.getApp(uuid);
+		List<Map<String, Object>> tmpApps = modelApp.getAppList(uuid);
 		
 		if(tmpApps == null){
 			return ERRCODE_DB;

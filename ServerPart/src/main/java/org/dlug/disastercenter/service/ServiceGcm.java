@@ -48,7 +48,7 @@ public final class ServiceGcm extends ServiceImpl{
 		sender = new Sender(gcm_simple_key);
 	}
 
-	public String sendReport(List<String> listGcmId, Map<String, String> messages){
+	public String sendReport(List<Long> listAppIdx, List<String> listGcmId, Map<String, String> messages){
 		Builder messageBuilder = new Message.Builder()
 //		.collapseKey("")
 		.timeToLive(1800)
@@ -67,6 +67,7 @@ public final class ServiceGcm extends ServiceImpl{
 		if (listGcmId.size() == 1) {
 			// send a single message using plain post
 			String registrationId = listGcmId.get(0);
+			Long appIdx = listAppIdx.get(0);
 //			Message message = new Message.Builder().build();
 
 			Result result = null;
@@ -76,6 +77,9 @@ public final class ServiceGcm extends ServiceImpl{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
+			
 			Logger.info("Sent message to one device: " + result);
 			return "Sent message to one device: " + result;
 		} else {
@@ -90,7 +94,7 @@ public final class ServiceGcm extends ServiceImpl{
 				partialDevices.add(device);
 				int partialSize = partialDevices.size();
 				if (partialSize == MULTICAST_SIZE || counter == total) {
-					asyncSend(partialDevices, message);
+					asyncSend(listAppIdx, partialDevices, message);
 					partialDevices.clear();
 					tasks++;
 				}
@@ -100,9 +104,9 @@ public final class ServiceGcm extends ServiceImpl{
 		return "";
 	}
 
-	private void asyncSend(List<String> partialDevices, final Message message) {
+	private void asyncSend(List<Long> listApp, List<String> listDevice, final Message message) {
 		// make a copy
-		final List<String> devices = new ArrayList<String>(partialDevices);
+		final List<String> devices = new ArrayList<String>(listDevice);
 		threadPool.execute(new Runnable() {
 
 			public void run() {
@@ -120,6 +124,9 @@ public final class ServiceGcm extends ServiceImpl{
 					Result result = results.get(i);
 					String messageId = result.getMessageId();
 					if (messageId != null) {
+						
+						
+						
 						Logger.info("Succesfully sent message to device: " + regId +
 								"; messageId = " + messageId);
 						String canonicalRegId = result.getCanonicalRegistrationId();
@@ -145,7 +152,11 @@ public final class ServiceGcm extends ServiceImpl{
 			}});
 	}
 
-	public boolean updateGcmId(String oldGcmId, String newGcmId){
+	private void putSuccessMessage(long appIdx, long reportIdx){
+		
+	}
+	
+	private boolean updateGcmId(String oldGcmId, String newGcmId){
 		SqlMapClientTemplate sqlMapClientTemplate = getSqlMapClientTemplate();
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -162,7 +173,7 @@ public final class ServiceGcm extends ServiceImpl{
 		return true;
 	}
 
-	public boolean removeGcmId(String gcmId){
+	private boolean removeGcmId(String gcmId){
 		SqlMapClientTemplate sqlMapClientTemplate = getSqlMapClientTemplate();
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();

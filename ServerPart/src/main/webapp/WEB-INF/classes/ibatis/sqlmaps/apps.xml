@@ -8,9 +8,23 @@
 	<typeAlias alias="List" type="java.util.List"/>
 	
 	<select id="get_app" parameterClass="HashMap" resultClass="HashMap">
-		SELECT * FROM apps WHERE `uuid` = "$uuid$";
+		SELECT * FROM apps
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid">
+				`uuid` = "$uuid$"
+			</isNotNull>
+			<isNotNull prepend="AND" property="idx">
+				`idx` = "$idx$"
+			</isNotNull>
+			<isNotNull prepend="AND" property="lat_start">
+				<![CDATA[
+					loc_lat > $lat_start$ AND loc_lat < $lat_end$ AND loc_lng > $lng_start$ AND loc_lng < $lng_end$
+				]]> 
+			</isNotNull>
+		</dynamic>
 	</select>
 	
+<!-- TODO: Remove  --> 
 	<select id="get_app_with_idx" parameterClass="HashMap" resultClass="HashMap">
 		SELECT * FROM apps WHERE `idx` = "$idx$";
 	</select>

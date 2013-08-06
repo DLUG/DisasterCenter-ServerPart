@@ -1,0 +1,30 @@
+.head_box{
+	width: 960px;
+	margin: 0px auto;
+	min-height: 100px;
+}
+
+.title{
+	font-size: 40px;
+	width: 500px;
+	float: left;
+	margin: auto 0px;
+}
+
+.top_menu{
+	float: right;
+	width: 200px;
+}
+
+.content{
+	width: 960px;
+	min-height: 500px;
+	clear: both;
+	margin: 0px auto;
+}
+
+.bottom_box{
+	width: 960px;
+	text-align: center;
+	margin: 0px auto;
+}

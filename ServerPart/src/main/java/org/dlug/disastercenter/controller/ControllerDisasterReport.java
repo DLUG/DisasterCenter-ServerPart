@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.DisasterType;
+import org.dlug.disastercenter.common.ReportType;
 import org.dlug.disastercenter.model.ModelReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +52,8 @@ public class ControllerDisasterReport extends ControllerPages{
 			tmpItem.put("accuracy", article.get("loc_accuracy"));
 			tmpItem.put("loc_name", article.get("loc_name"));
 			
-			tmpItem.put("type_report", article.get("type_report"));
-			tmpItem.put("type_disaster", article.get("type_disaster"));
+			tmpItem.put("type_report", ReportType.code2string((Integer) article.get("type_report")));
+			tmpItem.put("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 			
 			String datetime = modelReport.sdf.format(((Date) article.get("datetime")));
 			tmpItem.put("datetime", datetime);
@@ -81,8 +83,8 @@ public class ControllerDisasterReport extends ControllerPages{
 		model.addAttribute("accuracy", article.get("loc_accuracy"));
 		model.addAttribute("loc_name", article.get("loc_name"));
 		
-		model.addAttribute("type_report", article.get("type_report"));
-		model.addAttribute("type_disaster", article.get("type_disaster"));
+		model.addAttribute("type_report", ReportType.code2string((Integer) article.get("type_report")));
+		model.addAttribute("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 		
 		String datetime = modelReport.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);

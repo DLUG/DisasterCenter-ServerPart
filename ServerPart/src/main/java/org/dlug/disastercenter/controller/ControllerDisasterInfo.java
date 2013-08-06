@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.DisasterType;
 import org.dlug.disastercenter.model.ModelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ public class ControllerDisasterInfo extends ControllerPages{
 			tmpItem.put("idx", article.get("idx"));
 			
 			tmpItem.put("title", article.get("title"));
+			tmpItem.put("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 			String datetime = modelInfo.sdf.format(((Date) article.get("datetime")));
 			tmpItem.put("datetime", datetime);
 			
@@ -70,6 +72,7 @@ public class ControllerDisasterInfo extends ControllerPages{
 		
 		model.addAttribute("idx", article.get("idx"));
 		model.addAttribute("title", article.get("title"));
+		model.addAttribute("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 		String datetime = modelInfo.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);
 		model.addAttribute("content", article.get("content"));
