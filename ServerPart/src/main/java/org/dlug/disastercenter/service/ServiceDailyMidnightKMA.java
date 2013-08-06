@@ -2,18 +2,20 @@ package org.dlug.disastercenter.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.dlug.disastercenter.common.CoordinateTools;
 import org.dlug.disastercenter.common.CoordinateTools.CoordLatLng;
-import org.dlug.disastercenter.model.ModelReport;
-import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.dlug.disastercenter.common.ApiKMA;
+import org.dlug.disastercenter.common.ApiDaumLocal;
+import org.dlug.disastercenter.model.ModelReport;
 
 public class ServiceDailyMidnightKMA extends ServiceImpl {
 	private ApiKMA apiKMA = new ApiKMA();
+	
+	private static ModelReport modelReport = new ModelReport();
 	
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -25,6 +27,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 
 	@Override
 	protected void process(SqlMapClientTemplate sqlMapClientTemplate) {
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> targetList = sqlMapClientTemplate.queryForList("service_kma_target.get_target_list");
 		
 		for(Map<String, Object> target: targetList){
@@ -117,19 +120,26 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 	}
 	
 	private void putReport(double lat, double lng, int type_disaster, String content, SqlMapClientTemplate sqlMapClientTemplate){
+		Date reportDate = new Date();
+		modelReport.setSqlMapClientTemplate(sqlMapClientTemplate);
+		modelReport.putReport(0, lat, lng, ApiDaumLocal.getAddress(lat, lng), 1, 0, type_disaster, content, reportDate);
+/*		
 		Map<String, Object> report = new HashMap<String, Object>();
 		
 		report.put("app_idx", 0);
 		report.put("loc_lat", lat);
 		report.put("loc_lng", lng);
 		report.put("loc_accuracy", "1");
-		report.put("loc_name", "");
+		report.put("loc_name", ApiDaumLocal.getAddress(lat, lng));
 		report.put("type_report", 0);
 		report.put("type_disaster", type_disaster);
 		
 		report.put("content", content);
-		report.put("datetime", sdf.format(new Date()));
+		
+		report.put("datetime", sdf.format(reportDate));
 		
 		sqlMapClientTemplate.insert("reports.put_report", report);
+*/		
+		ServicePushMessage.getInstance().pushReport(lat, lng, type_disaster, reportDate);
 	}
 }

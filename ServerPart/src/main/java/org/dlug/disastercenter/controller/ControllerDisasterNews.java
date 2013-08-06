@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.dlug.disastercenter.common.DisasterType;
+import org.dlug.disastercenter.model.ModelImpl;
 import org.dlug.disastercenter.model.ModelNews;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,7 +51,7 @@ public class ControllerDisasterNews extends ControllerPages{
 			}
 			tmpItem.put("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 			tmpItem.put("title", article.get("title"));
-			String datetime = modelNews.sdf.format(((Date) article.get("datetime")));
+			String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 			tmpItem.put("datetime", datetime);
 			
 			tmpList.add(tmpItem);
@@ -79,7 +80,7 @@ public class ControllerDisasterNews extends ControllerPages{
 		}
 		model.addAttribute("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 		model.addAttribute("title", article.get("title"));
-		String datetime = modelNews.sdf.format(((Date) article.get("datetime")));
+		String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);
 		model.addAttribute("content", article.get("content"));
 		

@@ -36,11 +36,12 @@ public class ModelReport extends ModelImpl{
 	}
 
 	
-	public boolean putReport(long app_idx, double lat, double lng, double accuracy, int type_report, int type_disaster, String content, Date datetime){
+	public boolean putReport(long app_idx, double lat, double lng, String loc_name, double accuracy, int type_report, int type_disaster, String content, Date datetime){
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("app_idx", app_idx);
 		parameters.put("loc_lat", lat);
 		parameters.put("loc_lng", lng);
+		parameters.put("loc_name", loc_name);
 		parameters.put("loc_accuracy", accuracy);
 		parameters.put("type_report", type_report);
 		parameters.put("type_disaster", type_disaster);
@@ -106,6 +107,7 @@ public class ModelReport extends ModelImpl{
 		}
 		
 		try{
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("reports.get_report_list", parameters);
 			
 			return result;
@@ -117,6 +119,7 @@ public class ModelReport extends ModelImpl{
 	
 	public Map<String, Object> getReport(long idx){
 		try{
+			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) sqlMapClientTemplate.queryForObject("reports.get_report", idx);
 			
 			return result;

@@ -2,14 +2,11 @@ package org.dlug.disastercenter.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 public class ServiceScheduler extends TimerTask{
 	private static final ServiceScheduler instance = new ServiceScheduler();

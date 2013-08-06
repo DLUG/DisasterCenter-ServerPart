@@ -40,6 +40,7 @@ public class ModelNews extends ModelImpl{
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
 		try{
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("news.get_news_list", parameters);
 			
 			return result;
@@ -51,6 +52,7 @@ public class ModelNews extends ModelImpl{
 	
 	public Map<String, Object> getNews(long idx){
 		try{
+			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) sqlMapClientTemplate.queryForObject("news.get_news", idx);
 			
 			return result;

@@ -1,6 +1,5 @@
 package org.dlug.disastercenter.controller;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,15 +9,11 @@ import java.util.Map;
 
 import org.dlug.disastercenter.common.DisasterType;
 import org.dlug.disastercenter.model.ModelApps;
-import org.dlug.disastercenter.model.ModelInfo;
 import org.dlug.disastercenter.model.ModelReport;
-import org.dlug.disastercenter.service.ServiceGcm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dlug.disastercenter.service.ServicePushMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,7 +96,7 @@ public class ControllerDevTest extends ControllerPages{
 		List<Long> appIdxs = new ArrayList<Long>();
 		appIdxs.add((Long)app.get("idx"));
 		
-		String result = ServiceGcm.getInstance().sendReport(appIdxs, appList, gcmMessage);  
+		String result = ServicePushMessage.getInstance().sendMessage(appIdxs, appList, gcmMessage);  
 		
 		model.addAttribute("result", result);
 		

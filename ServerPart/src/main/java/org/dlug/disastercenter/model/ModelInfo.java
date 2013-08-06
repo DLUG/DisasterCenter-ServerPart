@@ -40,6 +40,7 @@ public class ModelInfo extends ModelImpl{
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
 		try{
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("info.get_info_list", parameters);
 			
 			return result;
@@ -51,6 +52,7 @@ public class ModelInfo extends ModelImpl{
 	
 	public Map<String, Object> getInfo(long idx){
 		try{
+			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) sqlMapClientTemplate.queryForObject("info.get_info", idx);
 			
 			return result;

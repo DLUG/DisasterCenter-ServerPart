@@ -9,9 +9,8 @@ import java.util.Map;
 
 import org.dlug.disastercenter.common.DisasterType;
 import org.dlug.disastercenter.common.ReportType;
+import org.dlug.disastercenter.model.ModelImpl;
 import org.dlug.disastercenter.model.ModelReport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +54,7 @@ public class ControllerDisasterReport extends ControllerPages{
 			tmpItem.put("type_report", ReportType.code2string((Integer) article.get("type_report")));
 			tmpItem.put("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 			
-			String datetime = modelReport.sdf.format(((Date) article.get("datetime")));
+			String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 			tmpItem.put("datetime", datetime);
 			
 			tmpList.add(tmpItem);
@@ -86,7 +85,7 @@ public class ControllerDisasterReport extends ControllerPages{
 		model.addAttribute("type_report", ReportType.code2string((Integer) article.get("type_report")));
 		model.addAttribute("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
 		
-		String datetime = modelReport.sdf.format(((Date) article.get("datetime")));
+		String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);
 		model.addAttribute("content", article.get("content"));
 		

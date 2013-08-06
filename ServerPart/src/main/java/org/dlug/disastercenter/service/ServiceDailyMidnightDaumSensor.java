@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.dlug.disastercenter.common.ApiDaumSensor;
 
 public class ServiceDailyMidnightDaumSensor extends ServiceImpl {
 
@@ -17,6 +18,7 @@ public class ServiceDailyMidnightDaumSensor extends ServiceImpl {
 
 	@Override
 	protected void process(SqlMapClientTemplate sqlMapClientTemplate) {
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> sensorList = sqlMapClientTemplate.queryForList("daumsensor.get_sensor_list");
 		
 		for(Map<String, Object> item: sensorList){

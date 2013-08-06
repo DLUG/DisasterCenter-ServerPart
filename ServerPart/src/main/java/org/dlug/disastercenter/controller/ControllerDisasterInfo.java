@@ -1,6 +1,5 @@
 package org.dlug.disastercenter.controller;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,9 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.dlug.disastercenter.common.DisasterType;
+import org.dlug.disastercenter.model.ModelImpl;
 import org.dlug.disastercenter.model.ModelInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +47,7 @@ public class ControllerDisasterInfo extends ControllerPages{
 			
 			tmpItem.put("title", article.get("title"));
 			tmpItem.put("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
-			String datetime = modelInfo.sdf.format(((Date) article.get("datetime")));
+			String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 			tmpItem.put("datetime", datetime);
 			
 			tmpList.add(tmpItem);
@@ -73,7 +71,7 @@ public class ControllerDisasterInfo extends ControllerPages{
 		model.addAttribute("idx", article.get("idx"));
 		model.addAttribute("title", article.get("title"));
 		model.addAttribute("type_disaster", DisasterType.code2string((Integer) article.get("type_disaster")));
-		String datetime = modelInfo.sdf.format(((Date) article.get("datetime")));
+		String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);
 		model.addAttribute("content", article.get("content"));
 		

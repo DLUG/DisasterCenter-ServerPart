@@ -1,7 +1,6 @@
 package org.dlug.disastercenter.model;
 
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public class ModelKmaTarget extends ModelImpl{
 	public List<Map<String, Object>> getTargetList(){
 		try{
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("service_kma_target.get_target_list");
 			
 			return result;
@@ -28,6 +28,7 @@ public class ModelKmaTarget extends ModelImpl{
 		parameters.put("kma_y", kma_y);
 		
 		try{
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> result = sqlMapClientTemplate.queryForList("service_kma_target.get_target_list_with_kmacoord", parameters);
 			
 			return result;

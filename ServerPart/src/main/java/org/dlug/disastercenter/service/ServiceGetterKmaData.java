@@ -1,28 +1,24 @@
 package org.dlug.disastercenter.service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ApiDaumLocal;
+import org.dlug.disastercenter.common.ApiKMA;
 import org.dlug.disastercenter.common.ConstantAlertLimit;
 import org.dlug.disastercenter.common.CoordinateTools;
 import org.dlug.disastercenter.common.DisasterType;
 import org.dlug.disastercenter.common.CoordinateTools.CoordLatLng;
-import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelReport;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 public class ServiceGetterKmaData extends ServicePeriodImpl{
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	private ModelReport modelReport = new ModelReport();
-	private ModelApps modelApps = new ModelApps();
 	
 	private ApiKMA apiKMA = new ApiKMA();
 	
@@ -32,9 +28,7 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 	
 	@Override
 	protected void process(SqlMapClientTemplate sqlMapClientTemplate) {
-		modelReport.setSqlMapClientTemplate(sqlMapClientTemplate);
-		modelApps.setSqlMapClientTemplate(sqlMapClientTemplate);
-		
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> targetList = sqlMapClientTemplate.queryForList("service_kma_target.get_target_list");
 		
 		for(Map<String, Object> target: targetList){
@@ -106,19 +100,24 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 	}
 	
 	private void putReport(double lat, double lng, int type_disaster, String content, SqlMapClientTemplate sqlMapClientTemplate){
+		modelReport.setSqlMapClientTemplate(sqlMapClientTemplate);
+		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.HOUR_OF_DAY, -1);
 		
 		List<Map<String, Object>> reportList = modelReport.getReportList(lat, lng, 10, type_disaster, cal.getTime());
 		
 		if(reportList.size() == 0){
+			String locName = ApiDaumLocal.getAddress(lat, lng);
+/*	Remove This when Process Perfectly
 			Map<String, Object> report = new HashMap<String, Object>();
 			
 			report.put("app_idx", 0);
 			report.put("loc_lat", lat);
 			report.put("loc_lng", lng);
 			report.put("loc_accuracy", "1");
-			report.put("loc_name", "");
+			
+			report.put("loc_name", locName);
 			report.put("type_report", 0);
 			report.put("type_disaster", type_disaster);
 			
@@ -126,47 +125,14 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 			report.put("datetime", sdf.format(new Date()));
 			
 			sqlMapClientTemplate.insert("reports.put_report", report);
+*/
+			Date reportDate = new Date();
 			
-			reportList = modelReport.getReportList(lat, lng, 1, type_disaster, cal.getTime());
+			modelReport.putReport(0, lat, lng, locName, 1, 0, type_disaster, content, reportDate);
 			
-			if(reportList.size() != 0){
-				
-				List<Map<String, Object>> targetAppList = modelApps.getAppList(lat, lng, 50);
-
-				List<String> appGcmIdList = new ArrayList<String>();
-				List<Long> appIdxList = new ArrayList<Long>();
-				
-				for(Map<String, Object> targetApp : targetAppList){
-					double tmpDistance = CoordinateTools.calcDistance(lat, lng, (Double)targetApp.get("loc_lat"), (Double)targetApp.get("loc_lng"));
-					
-					if(tmpDistance < (Double)targetApp.get("setting_range")){
-						appGcmIdList.add((String) targetApp.get("gcm_id"));
-						appIdxList.add((Long) targetApp.get("idx"));
-					}
-				}
-				
-				if(appGcmIdList.size() > 0){
-					report = reportList.get(0);
-					
-					Map<String, String> gcmMessage = new HashMap<String, String>();
-					gcmMessage.put("report_idx", String.valueOf((Long)report.get("idx")));
-					gcmMessage.put("type_disaster", String.valueOf((Integer)report.get("type_disaster")));
-					
-					//Deprecated
-					gcmMessage.put("type_disaster_string", DisasterType.code2string((Integer)report.get("type_disaster")));
-					
-					gcmMessage.put("content", (String) report.get("content"));
-					
-					Date datetime = (Date) report.get("datetime");
-					
-					gcmMessage.put("timestamp", String.valueOf(datetime.getTime()));
-					
-		//TODO:			
-					
-					String result = ServiceGcm.getInstance().sendReport(appIdxList, appGcmIdList, gcmMessage);  
-				}
-			}
+			Logger.info("Report - Lat: " + lat + ", Lng: " + lng + ", LocName: " + locName + ", DisasterType: " + type_disaster + ", Content: " + content);
 			
+			ServicePushMessage.getInstance().pushReport(lat, lng, type_disaster, reportDate);
 		}
 	}
 }

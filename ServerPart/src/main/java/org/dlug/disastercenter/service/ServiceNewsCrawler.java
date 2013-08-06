@@ -16,10 +16,6 @@ import java.util.Map;
 
 import org.dlug.disastercenter.common.XMLDocument;
 import org.dlug.disastercenter.common.XMLElement;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 
 public class ServiceNewsCrawler extends ServicePeriodImpl{
@@ -34,6 +30,7 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 	@Override
 	protected void process(SqlMapClientTemplate sqlMapClientTemplate) {
 		
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> rssList = sqlMapClientTemplate.queryForList("service_news.get_rss_list");
 		
 		for(Map<String, Object> item: rssList){
@@ -58,7 +55,6 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 				XMLElement xmlChannel = xml.getChild(0);
 				
 				List<XMLElement> articleList = xmlChannel.getChild("item");
-				XMLElement[] list = xmlChannel.getChilds();
 				
 				for(XMLElement article: articleList){
 					String pubDateString = article.getChild("pubDate").get(0).getValue();
@@ -71,7 +67,6 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 						if(item.get("update_datetime") != null)
 							lastCrawledTime = new Date(((Timestamp)item.get("update_datetime")).getTime());
 					} catch (java.text.ParseException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -142,7 +137,6 @@ public class ServiceNewsCrawler extends ServicePeriodImpl{
 					try {
 						rssPubDate = dateFormatterRssPubDate.parse(rssPubDateString);
 					} catch (java.text.ParseException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					

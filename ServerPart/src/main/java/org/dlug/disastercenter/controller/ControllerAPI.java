@@ -3,7 +3,6 @@ package org.dlug.disastercenter.controller;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,9 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ApiDaumLocal;
 import org.dlug.disastercenter.common.CoordinateTools;
 import org.dlug.disastercenter.common.CoordinateTools.CoordKma;
 import org.dlug.disastercenter.model.ModelApps;
+import org.dlug.disastercenter.model.ModelImpl;
 import org.dlug.disastercenter.model.ModelInfo;
 import org.dlug.disastercenter.model.ModelKmaTarget;
 import org.dlug.disastercenter.model.ModelNews;
@@ -173,12 +174,16 @@ public class ControllerAPI {
 		else if (appIdx == ERRCODE_AUTH)
 			return errMsgAuth();
 		
-		if(modelReport.putReport(appIdx, lat, lng, accuracy, 1, type_disaster, content, new Date())){
+		String loc_name = ApiDaumLocal.getAddress(lat, lng);
+		
+		if(modelReport.putReport(appIdx, lat, lng, loc_name, accuracy, 1, type_disaster, content, new Date())){
 			result.put("status", 0);
 			result.put("msg", "Success");
 		} else {
 			return errMsgDB();
 		}
+		
+		// TODO: Merge Reports
 		
 		return result;
 	}
@@ -225,7 +230,7 @@ public class ControllerAPI {
 			long resultAmount = modelReport.getAmount(lat, lng, range, startDatetime);
 			if(resultAmount != -1){
 				result.put("total_amount", resultAmount);
-				result.put("page_amount", (int)((resultAmount - 1) / modelReport.PAGE_AMOUNT) + 1);
+				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
 				result.put("status", 999);
@@ -282,7 +287,7 @@ public class ControllerAPI {
 			long resultAmount = modelNews.getAmount();
 			if(resultAmount != -1){
 				result.put("total_amount", resultAmount);
-				result.put("page_amount", (int)((resultAmount - 1) / modelNews.PAGE_AMOUNT) + 1);
+				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
 				result.put("status", 999);
@@ -318,7 +323,6 @@ public class ControllerAPI {
 				try {
 					content = URLDecoder.decode(content, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -358,7 +362,7 @@ public class ControllerAPI {
 			long resultAmount = modelNews.getAmount();
 			if(resultAmount != -1){
 				result.put("total_amount", resultAmount);
-				result.put("page_amount", (int)((resultAmount - 1) / modelNews.PAGE_AMOUNT) + 1);
+				result.put("page_amount", (int)((resultAmount - 1) / ModelImpl.PAGE_AMOUNT) + 1);
 			} else {
 				result.clear();
 				result.put("status", 999);

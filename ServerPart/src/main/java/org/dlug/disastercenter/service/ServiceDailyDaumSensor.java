@@ -8,6 +8,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.dlug.disastercenter.common.ApiDaumSensor;
 
 public class ServiceDailyDaumSensor extends ServicePeriodImpl{
 	public final static SimpleDateFormat dateFormatMySql = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

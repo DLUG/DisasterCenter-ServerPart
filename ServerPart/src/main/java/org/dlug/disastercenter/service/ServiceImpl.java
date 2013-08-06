@@ -2,7 +2,6 @@ package org.dlug.disastercenter.service;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -30,7 +29,6 @@ public abstract class ServiceImpl extends TimerTask implements Runnable{
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -59,7 +57,6 @@ public abstract class ServiceImpl extends TimerTask implements Runnable{
 		try {
 			sqlMapClient = SqlMapClientBuilder.buildSqlMapClient (Resources.getResourceAsReader(this.getClass().getClassLoader(), "ibatis/SqlMapConfig.xml"));
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
