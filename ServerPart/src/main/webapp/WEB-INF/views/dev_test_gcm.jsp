@@ -6,7 +6,7 @@ request.setCharacterEncoding("UTF-8");
 %>
 <html>
 <head>
-	<title>개발자용 테스트 - 재난알림시스템</title>
+	<title>GCM 테스트 - 개발자용 - 재난알림시스템</title>
 </head>
 <body>
 <h1>

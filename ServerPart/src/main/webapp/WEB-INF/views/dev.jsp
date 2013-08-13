@@ -6,12 +6,15 @@ request.setCharacterEncoding("UTF-8");
 %>
 <html>
 <head>
-	<title>메세지 발송 결과 - 개발자용 - 재난알림시스템</title>
+	<title>개발자용 - 재난알림시스템</title>
 </head>
 <body>
 <h1>
-	메세지 발송 결과입니다.
+	개발자용 페이지입니다.
 </h1>
-${result}
+
+<a href="./gcm">GCM Test</a><br>
+<a href="./checked_area">Show Checked Area</a><br>
+
 </body>
 </html>

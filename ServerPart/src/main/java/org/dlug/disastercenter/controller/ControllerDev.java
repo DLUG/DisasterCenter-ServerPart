@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ApiDaumLocal;
+import org.dlug.disastercenter.common.CoordinateTools;
+import org.dlug.disastercenter.common.CoordinateTools.CoordLatLng;
 import org.dlug.disastercenter.common.DisasterType;
 import org.dlug.disastercenter.model.ModelApps;
+import org.dlug.disastercenter.model.ModelKmaTarget;
 import org.dlug.disastercenter.model.ModelReport;
 import org.dlug.disastercenter.service.ServicePushMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping("/dev_test")
-public class ControllerDevTest extends ControllerPages{
+@RequestMapping("/dev")
+public class ControllerDev extends ControllerPages{
 	
 	@Autowired
 	private ModelReport modelReport;
@@ -31,12 +35,48 @@ public class ControllerDevTest extends ControllerPages{
 	@Autowired
 	private ModelApps modelApps;
 
+	@Autowired
+	private ModelKmaTarget modelKmaTarget;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String devTestMain(Locale locale, Model model) {
+	public String devMain(Locale locale, Model model) {
+		
+		return "dev";
+	}
+	
+	@RequestMapping(value = "/checked_area", method = RequestMethod.GET)
+	public String devCheckedArea(Locale locale, Model model) {
+		
+		List<Map<String, Object>> targetKmaList = modelKmaTarget.getTargetList();
+		
+		List<Map<String, Object>> targetList = new ArrayList<Map<String,Object>>();
+		
+		for(Map<String, Object> item: targetKmaList){
+			Map<String, Object> resultItem = new HashMap<String, Object>();
+			
+			int kmaX = (Integer) item.get("kma_x");
+			int kmaY = (Integer) item.get("kma_y");
+			
+			CoordLatLng latlng = CoordinateTools.Kma2latlng(kmaX, kmaY);
+			
+			resultItem.put("lat", latlng.lat);
+			resultItem.put("lng", latlng.lng);
+			resultItem.put("addr", item.get("idx") + " " + ApiDaumLocal.getAddress(latlng.lat, latlng.lng));
+			
+			targetList.add(resultItem);
+		}
+		
+		model.addAttribute("target_list", targetList);
+		
+		return "dev_checked_area";
+	}
+	
+	
+	@RequestMapping(value = "/gcm", method = RequestMethod.GET)
+	public String devTestGcm(Locale locale, Model model) {
 		List<Map<String, Object>> reportList = modelReport.getReportList(1);
 		List<Map<String, Object>> appList = modelApps.getAppList();
 		
@@ -72,7 +112,7 @@ public class ControllerDevTest extends ControllerPages{
 		model.addAttribute("report", tmpReportList);
 		model.addAttribute("app", tmpAppList);
 		
-		return "dev_test";
+		return "dev_test_gcm";
 	}
 	
 	@RequestMapping(value = "/send_test_msg", method = RequestMethod.GET)
