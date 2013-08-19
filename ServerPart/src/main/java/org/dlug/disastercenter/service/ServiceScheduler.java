@@ -8,13 +8,14 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.springframework.beans.factory.DisposableBean;
+
 public class ServiceScheduler extends TimerTask{
 	private static final ServiceScheduler instance = new ServiceScheduler();
 	private List<Map<String, Object>> listService;
 	
 	private Timer timer;
 
-	
 	private ServiceScheduler(){
 		listService = new ArrayList<Map<String, Object>>();
 		timer = new Timer();
@@ -34,6 +35,10 @@ public class ServiceScheduler extends TimerTask{
 		listService.add(tmpService);
 	}
 
+	public void unsetScheduler(ServiceImpl service){
+		listService.remove(service);
+	}
+	
 	@Override
 	public void run() {
 		Calendar calendar = Calendar.getInstance();
@@ -52,12 +57,16 @@ public class ServiceScheduler extends TimerTask{
 		}
 	}
 	
-	@Override
-	public void finalize() throws Throwable{
-		timer.cancel();
-		timer.purge();
-		timer = null;
-		
-		super.finalize();
+	public void destroy(){
+		if(timer != null){
+			try{
+				System.out.println("INFO_SCHEDULER : Finalizing Scheduler");
+				timer.cancel();
+				timer.purge();
+				timer = null;
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
 	}
 }

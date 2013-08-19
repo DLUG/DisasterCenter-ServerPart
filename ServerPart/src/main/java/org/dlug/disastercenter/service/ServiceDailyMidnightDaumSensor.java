@@ -8,12 +8,12 @@ import org.json.simple.JSONObject;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import org.dlug.disastercenter.common.ApiDaumSensor;
 
-public class ServiceDailyMidnightDaumSensor extends ServiceImpl {
+public class ServiceDailyMidnightDaumSensor extends ServiceSchedulerImpl {
 
 	public ServiceDailyMidnightDaumSensor() {
 		super("Daily Midnight Service - DaumSensor");
 		
-		ServiceScheduler.getInstance().setScheduler(this, 00, 00);
+		setScheduler(this, 00, 00);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import org.dlug.disastercenter.common.ApiKMA;
 import org.dlug.disastercenter.common.ApiDaumLocal;
 import org.dlug.disastercenter.model.ModelReport;
 
-public class ServiceDailyMidnightKMA extends ServiceImpl {
+public class ServiceDailyMidnightKMA extends ServiceSchedulerImpl {
 	private ApiKMA apiKMA = new ApiKMA();
 	
 	private static ModelReport modelReport = new ModelReport();
@@ -22,7 +22,7 @@ public class ServiceDailyMidnightKMA extends ServiceImpl {
 	public ServiceDailyMidnightKMA() {
 		super("Daily Midnight Service - KMA");
 		
-		ServiceScheduler.getInstance().setScheduler(this, 00, 00);
+		setScheduler(this, 00, 00);
 	}
 
 	@Override

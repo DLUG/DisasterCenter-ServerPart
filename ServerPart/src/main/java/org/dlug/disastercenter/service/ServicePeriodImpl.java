@@ -2,7 +2,9 @@ package org.dlug.disastercenter.service;
 
 import java.util.Timer;
 
-public abstract class ServicePeriodImpl extends ServiceImpl{
+import org.springframework.beans.factory.DisposableBean;
+
+public abstract class ServicePeriodImpl extends ServiceImpl implements DisposableBean{
 	private Timer timer;
 	protected int period = 0;
 	
@@ -16,11 +18,11 @@ public abstract class ServicePeriodImpl extends ServiceImpl{
 	}
 	
 	@Override
-	public void finalize() throws Throwable{
+	public void destroy(){
+		Logger.info("Finalizing Service");
+
 		timer.cancel();
 		timer.purge();
 		timer = null;
-		
-		super.finalize();
 	}
 }
