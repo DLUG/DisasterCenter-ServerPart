@@ -23,7 +23,7 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 	private ApiKMA apiKMA = new ApiKMA();
 	
 	public ServiceGetterKmaData(){
-		super("ServiceGetterKmaData", 300000);
+		super("ServiceGetterKmaData", 1800000);
 	}
 	
 	@Override
