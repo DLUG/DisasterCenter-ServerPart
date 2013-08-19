@@ -34,6 +34,10 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 		for(Map<String, Object> target: targetList){
 			Map<String, Object> currentWeather = apiKMA.getCurrentWeather((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 			
+			if(currentWeather == null){
+				Logger.info("API ERROR");
+			}
+			
 			if((Double) currentWeather.get("temp") > ConstantAlertLimit.TEMP_HIGH_ALERT){
 				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				
