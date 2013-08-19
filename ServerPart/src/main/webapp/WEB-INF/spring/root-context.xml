@@ -10,4 +10,5 @@
 	<bean id="serviceNewsCrawler" class="org.dlug.disastercenter.service.ServiceNewsCrawler" />
 	<bean id="serviceDailyDaumSensor" class="org.dlug.disastercenter.service.ServiceDailyDaumSensor" />
 	<bean id="serviceDailyMidnightKMA" class="org.dlug.disastercenter.service.ServiceDailyMidnightKMA" />
+	<bean id="serviceDbDestroyer" class="org.dlug.disastercenter.service.ServiceDbDestroyer" />
 </beans>
