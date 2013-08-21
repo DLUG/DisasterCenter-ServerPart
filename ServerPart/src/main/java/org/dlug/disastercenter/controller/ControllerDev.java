@@ -159,5 +159,34 @@ public class ControllerDev extends ControllerPages{
 		
 		return result;
 	}
+	
+	@RequestMapping(value = "fill_address", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain; charset=utf-8")
+	public @ResponseBody String devFillAddress(){
+		String procResult = "";
+		
+		List<Map<String, Object>> data = modelReport.getNullAddressedReport();
+		
+		if(data == null){
+			return "Get Null AddressedReport is Fail";
+		}
+		
+		List<Map<String, Object>> results = new ArrayList<Map<String,Object>>();
+		
+		for(Map<String, Object> item: data){
+			Map<String, Object> result = new HashMap<String, Object>();
+			String address = ApiDaumLocal.getAddress((Double)item.get("loc_lat"), (Double)item.get("loc_lng"));
+
+			result.put("idx", item.get("idx"));
+			result.put("loc_name", address);
+			
+			results.add(result);
+		}
+		
+		modelReport.updateNullAddressedReport(results);
+		
+		procResult = "Success";
+		
+		return procResult;
+	}
 }
 

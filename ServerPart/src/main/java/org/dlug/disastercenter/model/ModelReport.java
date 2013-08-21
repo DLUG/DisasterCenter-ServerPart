@@ -128,4 +128,17 @@ public class ModelReport extends ModelImpl{
 			return null;
 		}
 	}
+	
+	public List<Map<String, Object>> getNullAddressedReport(){
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> result = (List<Map<String, Object>>) sqlMapClientTemplate.queryForList("reports.get_null_address");
+		
+		return result;
+	}
+	
+	public void updateNullAddressedReport(List<Map<String, Object>> list){
+		for(Map<String, Object> item: list){
+			sqlMapClientTemplate.update("reports.update_null_address", item);
+		}
+	}
 }

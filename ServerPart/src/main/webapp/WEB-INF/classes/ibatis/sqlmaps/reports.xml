@@ -66,6 +66,14 @@
 		</dynamic>
 	</select>
 	
+	<select id="get_null_address" resultClass="HashMap">
+	    SELECT * FROM reports WHERE loc_name = "null null";
+	</select>
+	
+	<update id="update_null_address" parameterClass="HashMap">
+	    UPDATE reports SET loc_name = "$loc_name$" WHERE idx = $idx$;
+	</update>
+	
 	<insert id="put_report" parameterClass="HashMap">
 		INSERT INTO reports (
 			`app_idx`, 
