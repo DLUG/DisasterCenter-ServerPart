@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.dlug.disastercenter.common.ConstantReportType;
 import org.dlug.disastercenter.common.CoordinateTools;
 import org.dlug.disastercenter.common.CoordinateTools.CoordLatLng;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
@@ -39,7 +40,8 @@ public class ServiceDailyMidnightKMA extends ServiceSchedulerImpl {
 				String content = "[기상청] 폭염경보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("alert_high_temp_start") + " 시 부터 "
 					+ todayWeather.get("alert_high_temp_end") + " 시 까지 "
-					+ "최고 " + todayWeather.get("temp_max") + " 도의 온도가 예상되어 폭염경보가 발령될 가능성이 높습니다.";
+					+ "최고 " + todayWeather.get("temp_max") + " 도의 온도가 예상되어 폭염경보가 발령될 가능성이 높습니다.<br>"
+					+ "해당 시간, 온열질환에 유의하시기바랍니다.";
 				
 				putReport(latlng.lat, latlng.lng, 906, content, sqlMapClientTemplate);
 			}
@@ -50,7 +52,8 @@ public class ServiceDailyMidnightKMA extends ServiceSchedulerImpl {
 				String content = "[기상청] 폭염주의보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("watch_high_temp_start") + " 시 부터 "
 					+ todayWeather.get("watch_high_temp_end") + " 시 까지 "
-					+ "최고 " + todayWeather.get("temp_max") + " 도의 온도가 예상되어 폭염주의보가 발령될 가능성이 높습니다.";
+					+ "최고 " + todayWeather.get("temp_max") + " 도의 온도가 예상되어 폭염주의보가 발령될 가능성이 높습니다.<br>"
+					+ "해당 시간, 온열질환에 유의하시기바랍니다.";
 				
 				putReport(latlng.lat, latlng.lng, 905, content, sqlMapClientTemplate);
 			}
@@ -122,7 +125,7 @@ public class ServiceDailyMidnightKMA extends ServiceSchedulerImpl {
 	private void putReport(double lat, double lng, int type_disaster, String content, SqlMapClientTemplate sqlMapClientTemplate){
 		Date reportDate = new Date();
 		modelReport.setSqlMapClientTemplate(sqlMapClientTemplate);
-		modelReport.putReport(0, lat, lng, ApiDaumLocal.getAddress(lat, lng), 1, 0, type_disaster, content, reportDate);
+		modelReport.putReport(0, lat, lng, ApiDaumLocal.getAddress(lat, lng), 1, ConstantReportType.KMA_FORCAST, type_disaster, content, reportDate);
 /*		
 		Map<String, Object> report = new HashMap<String, Object>();
 		

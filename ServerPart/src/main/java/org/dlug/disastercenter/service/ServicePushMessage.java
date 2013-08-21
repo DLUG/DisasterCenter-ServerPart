@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.dlug.disastercenter.common.CoordinateTools;
-import org.dlug.disastercenter.common.DisasterType;
+import org.dlug.disastercenter.common.ConstantDisasterType;
 import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelReport;
 import org.springframework.dao.DataAccessException;
@@ -85,7 +85,7 @@ public final class ServicePushMessage extends ServiceImpl{
 				gcmMessage.put("type_disaster", String.valueOf((Integer)report.get("type_disaster")));
 				
 				//Deprecated
-				gcmMessage.put("type_disaster_string", DisasterType.code2string((Integer)report.get("type_disaster")));
+				gcmMessage.put("type_disaster_string", ConstantDisasterType.code2string((Integer)report.get("type_disaster")));
 				
 				gcmMessage.put("content", (String) report.get("content"));
 				

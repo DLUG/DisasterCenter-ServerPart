@@ -11,7 +11,7 @@ import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 public class ServiceDbDestroyer  implements DisposableBean{
 	public ServiceDbDestroyer(){
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(9000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

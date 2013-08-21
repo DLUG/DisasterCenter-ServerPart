@@ -10,7 +10,7 @@ import java.util.Map;
 import org.dlug.disastercenter.common.ApiDaumLocal;
 import org.dlug.disastercenter.common.ApiDaumSensor;
 import org.dlug.disastercenter.common.ConstantAlertLimit;
-import org.dlug.disastercenter.common.DisasterType;
+import org.dlug.disastercenter.common.ConstantDisasterType;
 import org.dlug.disastercenter.model.ModelReport;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -64,9 +64,9 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 				int typeDisaster = 0;
 				
 				if(temperature > 35)
-					typeDisaster = DisasterType.TEMP_HIGH_ALERT;
+					typeDisaster = ConstantDisasterType.TEMP_HIGH_ALERT;
 				else 
-					typeDisaster = DisasterType.TEMP_HIGH_WATCH;
+					typeDisaster = ConstantDisasterType.TEMP_HIGH_WATCH;
 				
 				
 				Calendar cal = Calendar.getInstance();

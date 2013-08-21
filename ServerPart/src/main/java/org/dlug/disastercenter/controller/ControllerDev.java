@@ -10,7 +10,7 @@ import java.util.Map;
 import org.dlug.disastercenter.common.ApiDaumLocal;
 import org.dlug.disastercenter.common.CoordinateTools;
 import org.dlug.disastercenter.common.CoordinateTools.CoordLatLng;
-import org.dlug.disastercenter.common.DisasterType;
+import org.dlug.disastercenter.common.ConstantDisasterType;
 import org.dlug.disastercenter.model.ModelApps;
 import org.dlug.disastercenter.model.ModelKmaTarget;
 import org.dlug.disastercenter.model.ModelReport;
@@ -125,7 +125,7 @@ public class ControllerDev extends ControllerPages{
 		Map<String, String> gcmMessage = new HashMap<String, String>();
 		gcmMessage.put("report_idx", String.valueOf((Long)report.get("idx")));
 		gcmMessage.put("type_disaster", String.valueOf((Integer)report.get("type_disaster")));
-		gcmMessage.put("type_disaster_string", "테스트" + DisasterType.code2string((Integer)report.get("type_disaster")));
+		gcmMessage.put("type_disaster_string", "테스트" + ConstantDisasterType.code2string((Integer)report.get("type_disaster")));
 		Date datetime = (Date) report.get("datetime");
 		
 		gcmMessage.put("timestamp", String.valueOf(datetime.getTime()));
