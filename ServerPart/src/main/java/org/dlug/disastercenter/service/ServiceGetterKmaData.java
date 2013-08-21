@@ -135,7 +135,7 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 */
 			Date reportDate = new Date();
 			
-			modelReport.putReport(0, lat, lng, locName, 1, ConstantReportType.DAUM_CURRENT, type_disaster, content, reportDate);
+			modelReport.putReport(0, lat, lng, locName, 1, ConstantReportType.KMA_CURRENT, type_disaster, content, reportDate);
 			
 			Logger.info("Report - Lat: " + lat + ", Lng: " + lng + ", LocName: " + locName + ", DisasterType: " + type_disaster + ", Content: " + content);
 			

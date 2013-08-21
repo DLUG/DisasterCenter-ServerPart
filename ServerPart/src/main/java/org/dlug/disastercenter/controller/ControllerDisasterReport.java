@@ -33,6 +33,7 @@ public class ControllerDisasterReport extends ControllerPages{
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String disasterNews(Locale locale, Model model) {
+/*	TODO: Remove if Process Perfectly
 		List<Map<String, Object>> articleList = modelReport.getReportList(1);
 		
 		if(articleList == null){
@@ -61,7 +62,7 @@ public class ControllerDisasterReport extends ControllerPages{
 		}
 		
 		model.addAttribute("list", tmpList);
-		
+*/		
 		return "disaster_report_home";
 	}
 	
@@ -75,15 +76,18 @@ public class ControllerDisasterReport extends ControllerPages{
 			return "error";
 		}
 		
+		String typeDisaster = ConstantDisasterType.code2string((Integer) article.get("type_disaster"));
+		
 		model.addAttribute("idx", article.get("idx"));
 		
 		model.addAttribute("lat", article.get("loc_lat"));
 		model.addAttribute("lng", article.get("loc_lng"));
 		model.addAttribute("accuracy", article.get("loc_accuracy"));
 		model.addAttribute("loc_name", article.get("loc_name"));
+		model.addAttribute("title", typeDisaster + "(" + article.get("loc_name") + ")");
 		
 		model.addAttribute("type_report", ConstantReportType.code2string((Integer) article.get("type_report")));
-		model.addAttribute("type_disaster", ConstantDisasterType.code2string((Integer) article.get("type_disaster")));
+		model.addAttribute("type_disaster", typeDisaster);
 		
 		String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);

@@ -16,10 +16,16 @@ request.setCharacterEncoding("UTF-8");
 </c:if>
 		재난알림센터
 	</title>
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="${contextPath}/resources/js/default.js"></script>
+	<script type="text/javascript">
+var CONTEXT_PATH = "${contextPath}";
+	</script>
 </head>
 <body>
 <div class="head_box">
-	<div class="title">
+	<div class="app_ad">알파버전 안드로이드 앱을 받으시려면 <a href="./resources/disastercenter_0.5.apk">여기</a>를 누르세요.</div>
+	<div class="title" onclick="location.href='${contextPath}';">
 		재난알림센터
 	</div>
 	<div class="top_menu">

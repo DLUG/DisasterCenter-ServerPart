@@ -14,6 +14,7 @@
 .top_menu{
 	float: right;
 	width: 200px;
+	text-align: right;
 }
 
 .content{
@@ -27,4 +28,26 @@
 	width: 960px;
 	text-align: center;
 	margin: 0px auto;
+}
+
+.app_ad{
+	clear: both;
+	width: 960px;
+	background-color: #CCCCCC;
+}
+
+.home_box{
+	width: 50%;
+	height: 500px;
+	float: left;
+}
+
+.list{
+	text-align: center;
+	width: 100%;	
+}
+
+.report_map{
+	width: 100%;
+	height: 100%;
 }
