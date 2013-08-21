@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Handles requests for the application home page.
@@ -47,7 +48,7 @@ public class ControllerDev extends ControllerPages{
 		return "dev";
 	}
 	
-	@RequestMapping(value = "/checked_area", method = RequestMethod.GET)
+	@RequestMapping(value = "checked_area", method = RequestMethod.GET)
 	public String devCheckedArea(Locale locale, Model model) {
 		
 		List<Map<String, Object>> targetKmaList = modelKmaTarget.getTargetList();
@@ -75,7 +76,7 @@ public class ControllerDev extends ControllerPages{
 	}
 	
 	
-	@RequestMapping(value = "/gcm", method = RequestMethod.GET)
+	@RequestMapping(value = "gcm", method = RequestMethod.GET)
 	public String devTestGcm(Locale locale, Model model) {
 		List<Map<String, Object>> reportList = modelReport.getReportList(1);
 		List<Map<String, Object>> appList = modelApps.getAppList();
@@ -115,7 +116,7 @@ public class ControllerDev extends ControllerPages{
 		return "dev_test_gcm";
 	}
 	
-	@RequestMapping(value = "/send_test_msg", method = RequestMethod.GET)
+	@RequestMapping(value = "send_test_msg", method = RequestMethod.GET)
 	public String sendTestMsg(Locale locale, Model model, 
 			@RequestParam(value="report_idx", required=true) long reportIdx,
 			@RequestParam(value="app_idx", required=true) long appIdx) {
@@ -142,4 +143,21 @@ public class ControllerDev extends ControllerPages{
 		
 		return "dev_test_gcm_sent";
 	}
+	
+	@RequestMapping(value = "coord2address", method = RequestMethod.GET)
+	public String devCoordToAddress(Locale locale, Model model) {
+		return "dev_coord2address";
+	}
+	
+	@RequestMapping(value = "coord2address_result", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain; charset=utf-8")
+	public @ResponseBody String devCoordToAddressResult(
+			@RequestParam(value="lat", required=true) double lat,
+			@RequestParam(value="lng", required=true) double lng){
+		String result = "";
+		
+		result = ApiDaumLocal.getAddress(lat, lng);
+		
+		return result;
+	}
 }
+

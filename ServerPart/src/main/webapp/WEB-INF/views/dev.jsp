@@ -15,6 +15,7 @@ request.setCharacterEncoding("UTF-8");
 
 <a href="./gcm">GCM Test</a><br>
 <a href="./checked_area">Show Checked Area</a><br>
+<a href="./coord2address">Coord to Address</a><br>
 
 </body>
 </html>

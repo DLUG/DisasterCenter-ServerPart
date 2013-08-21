@@ -30,6 +30,11 @@ public class ServiceGetterDaumSensorData extends ServicePeriodImpl{
 		modelReport.setSqlMapClientTemplate(sqlMapClientTemplate);
 		JSONArray listWatchTemp = ApiDaumSensor.getJSONSensorHotterThanWatchLimit(period);
 		
+		if(listWatchTemp == null){
+			Logger.error("API_ERROR");
+			return;
+		}
+		
 		String content = "";
 		
 		if(listWatchTemp.size() > 1){

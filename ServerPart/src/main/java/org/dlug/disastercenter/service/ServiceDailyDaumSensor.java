@@ -27,6 +27,11 @@ public class ServiceDailyDaumSensor extends ServicePeriodImpl{
 		for(int i = 0; i < queryAmount; i++){
 			JSONArray sensorList = ApiDaumSensor.getJSONSensors(i * 50);
 			
+			if(sensorList == null){
+				Logger.error("API_ERROR");
+				return;
+			}
+			
 			for(Object item: sensorList){
 				JSONObject itemHandler = (JSONObject) item;
 				

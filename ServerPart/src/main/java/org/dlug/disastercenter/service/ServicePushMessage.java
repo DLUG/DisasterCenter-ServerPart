@@ -28,7 +28,7 @@ public final class ServicePushMessage extends ServiceImpl{
 	private static final ServicePushMessage instance = new ServicePushMessage();
 	
 	private static final int MULTICAST_SIZE = 1000;
-	private String gcm_simple_key = "";
+	private static String gcm_simple_key = "";
 	private static Sender sender;
 
 	private static final Executor threadPool = Executors.newFixedThreadPool(5);
