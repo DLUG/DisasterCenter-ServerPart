@@ -17,6 +17,7 @@ request.setCharacterEncoding("UTF-8");
 <a href="./checked_area">Show Checked Area</a><br>
 <a href="./coord2address">Coord to Address</a><br>
 <a href="./fill_address">Fill Address in Report</a><br>
+<a href="./fill_dummy_report">Fill Dummy Report</a><br>
 
 </body>
 </html>

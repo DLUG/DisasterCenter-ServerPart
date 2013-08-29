@@ -64,7 +64,7 @@ public class ModelReport extends ModelImpl{
 		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
-		return getReportProc(parameters, 0, 0, 0, null);
+		return getReportList(parameters, 0, 0, 0, null);
 	}
 	
 	public List<Map<String, Object>> getReportList(double lat, double lng, double rangeKM, int type_disaster, Date startDatetime){
@@ -72,7 +72,7 @@ public class ModelReport extends ModelImpl{
 		
 		parameters.put("type_disaster", type_disaster);
 		
-		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
+		return getReportList(parameters, lat, lng, rangeKM, startDatetime);
 	}
 	
 	public List<Map<String, Object>> getReportList(int page, double lat, double lng, double rangeKM, Date startDatetime){
@@ -81,7 +81,7 @@ public class ModelReport extends ModelImpl{
 		parameters.put("limit_start", ((page - 1) * PAGE_AMOUNT));
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
-		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
+		return getReportList(parameters, lat, lng, rangeKM, startDatetime);
 	}
 	
 	public List<Map<String, Object>> getReportList(long offset, double lat, double lng, double rangeKM, Date startDatetime){
@@ -91,10 +91,10 @@ public class ModelReport extends ModelImpl{
 		parameters.put("offset", offset);
 		parameters.put("limit_duration", PAGE_AMOUNT);
 		
-		return getReportProc(parameters, lat, lng, rangeKM, startDatetime);
+		return getReportList(parameters, lat, lng, rangeKM, startDatetime);
 	}	
 	
-	public List<Map<String, Object>> getReportProc(HashMap<String, Object> parameters, double lat, double lng, double rangeKM, Date startDatetime){
+	public List<Map<String, Object>> getReportList(Map<String, Object> parameters, double lat, double lng, double rangeKM, Date startDatetime){
 		if(rangeKM != 0){
 			parameters.put("lat_start", lat - (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));
 			parameters.put("lat_end", lat + (rangeKM * ConstantCoordinate.DEGREE_PER_KM_LAT));

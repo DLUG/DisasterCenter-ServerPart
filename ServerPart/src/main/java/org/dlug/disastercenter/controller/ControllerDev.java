@@ -1,6 +1,7 @@
 package org.dlug.disastercenter.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -185,6 +186,53 @@ public class ControllerDev extends ControllerPages{
 		modelReport.updateNullAddressedReport(results);
 		
 		procResult = "Success";
+		
+		return procResult;
+	}
+	
+	@RequestMapping(value = "fill_dummy_report", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain; charset=utf-8")
+	public @ResponseBody String devFillDummy_report(){
+		String procResult = "";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("limit_start", 0);
+		parameters.put("limit_duration", 200);
+		
+		Calendar startCalendar = Calendar.getInstance();
+		startCalendar.set(Calendar.YEAR, 2013);
+		startCalendar.set(Calendar.MONTH, 7);
+		startCalendar.set(Calendar.DAY_OF_MONTH, 21);
+		Date startDatetime = startCalendar.getTime();
+		List<Map<String, Object>> data = modelReport.getReportList(parameters, 0, 0, 0, startDatetime);
+		
+		if(data == null){
+			return "Get Reports for Dummy is Fail";
+		}
+		
+		procResult += "Amount: " + data.size() + "\n";
+		
+		for(int i = data.size() - 1; i >= 0; i--){
+//		for(Map<String, Object> item: data){
+			Map<String, Object> item = data.get(i);
+			
+			Calendar tmpReportDatetime = Calendar.getInstance();
+			tmpReportDatetime.setTime((Date) item.get("datetime"));
+			int tmpDate = tmpReportDatetime.get(Calendar.DAY_OF_MONTH);
+			
+			int todayDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+			tmpDate = todayDate - 22 + tmpDate;
+			
+			if(tmpDate > todayDate)
+				continue;
+			
+			tmpReportDatetime.set(Calendar.DAY_OF_MONTH, tmpDate);
+			
+			modelReport.putReport(0, (Double) item.get("loc_lat"), (Double) item.get("loc_lng"), (String) item.get("loc_name"), 
+					(Double) item.get("loc_accuracy"), (Integer) item.get("type_report"), (Integer) item.get("type_disaster"), 
+					(String) item.get("content"), tmpReportDatetime.getTime());
+			procResult += tmpDate + "\n";
+		}
+		
+		procResult += "Success";
 		
 		return procResult;
 	}
