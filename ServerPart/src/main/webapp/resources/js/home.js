@@ -85,16 +85,16 @@ function JobTicket(timeline){
 	this.timeout = 0;
 }
 
-var PinAnimator2 = new Object();
-PinAnimator2.ANICODE_HIDE_ANIMATION = 0;
-PinAnimator2.ANICODE_HIDE = 1;
-PinAnimator2.ANICODE_SHOW_ANIMATION = 2;
+var PinAnimator = new Object();
+PinAnimator.ANICODE_HIDE_ANIMATION = 0;
+PinAnimator.ANICODE_HIDE = 1;
+PinAnimator.ANICODE_SHOW_ANIMATION = 2;
 var initJobTicket = new JobTicket(0);
 initJobTicket.isused = true;
-PinAnimator2.data = new JobTreeNode(initJobTicket);
-//PinAnimator2.regTimeline = 0;
-PinAnimator2.playedTimeline = 0;
-PinAnimator2.addAni = function(idx, actionCode, timeout){
+PinAnimator.data = new JobTreeNode(initJobTicket);
+//PinAnimator.regTimeline = 0;
+PinAnimator.playedTimeline = 0;
+PinAnimator.addAni = function(idx, actionCode, timeout){
 	var thisTimeline = (this.playedTimeline + timeout);
 	
 	var tmpJobTicket = new JobTicket(thisTimeline);
@@ -106,125 +106,26 @@ PinAnimator2.addAni = function(idx, actionCode, timeout){
 	
 	setTimeout(function(){
 		 
-		var thisTimeline = PinAnimator2.playedTimeline;
-		var thisJobTicket = PinAnimator2.data.get(thisTimeline);
+		var thisTimeline = PinAnimator.playedTimeline;
+		var thisJobTicket = PinAnimator.data.get(thisTimeline);
 		
-		console.log("playing: " + thisJobTicket.timeline);
-		if((thisJobTicket.timeline) > PinAnimator2.playedTimeline)
-			PinAnimator2.playedTimeline = (thisJobTicket.timeline);
+//		console.log("playing: " + thisJobTicket.timeline);
+		if((thisJobTicket.timeline) > PinAnimator.playedTimeline)
+			PinAnimator.playedTimeline = (thisJobTicket.timeline);
 		
 		var jobAction = thisJobTicket.jobAction;
 		var jobIdx = thisJobTicket.jobIdx;
 		
-		if(jobAction == PinAnimator2.ANICODE_HIDE_ANIMATION){
+		if(jobAction == PinAnimator.ANICODE_HIDE_ANIMATION){
 			reportData[jobIdx].pin.setAnimation(google.maps.Animation.BOUNCE);
-		} else if(jobAction == PinAnimator2.ANICODE_HIDE){
+		} else if(jobAction == PinAnimator.ANICODE_HIDE){
 			reportData[jobIdx].pin.setVisible(false);
-		} else if(jobAction == PinAnimator2.ANICODE_SHOW_ANIMATION){
+		} else if(jobAction == PinAnimator.ANICODE_SHOW_ANIMATION){
 			reportData[jobIdx].pin.setAnimation(google.maps.Animation.DROP);
 			reportData[jobIdx].pin.setVisible(true);
 		}
 	}, timeout);
 };
-
-var PinAnimator = new Object();
-PinAnimator.ANICODE_HIDE_ANIMATION = 0;
-PinAnimator.ANICODE_HIDE = 1;
-PinAnimator.ANICODE_SHOW_ANIMATION = 2;
-PinAnimator.idxArr = new Array();
-PinAnimator.idxObj = new Object();
-PinAnimator.actionArr = new Array();
-PinAnimator.timeoutArr = new Array();
-PinAnimator.timelineArr = new Array();
-PinAnimator.regIdx = 0;
-PinAnimator.playIdx = 0;
-PinAnimator.playTimeline = 0;
-PinAnimator.regTimeline = 0;
-PinAnimator.getMaxTimeout = function(){
-	var regIdx = this.regIdx;
-	var playIdx = this.playIdx;
-	var tmpMaxTimeout = 0;
-	
-	tmpMaxTimeout = this.timeoutArr[playIdx];
-	for(var i = playIdx + 1; i < regIdx; i++){
-		if(tmpMaxTimeout < this.timeoutArr[i]){
-			tmpMaxTimeout = this.timeoutArr[i];
-		}
-	}
-	
-	if(!tmpMaxTimeout)
-		tmpMaxTimeout = 0;
-
-	return tmpMaxTimeout;
-};
-
-PinAnimator.addAni = function(idx, actionCode, timeout){
-	var regIdx = this.regIdx++;
-	
-	var regTimeline = this.regTimeline;
-	
-	this.idxArr[regIdx] = idx;
-	this.actionArr[regIdx] = actionCode;
-	
-	this.timeoutArr[regIdx] = timeout;
-	
-	console.log("Timeout: " + timeout);
-	
-	setTimeout(function(){
-		var playIdx = PinAnimator.playIdx;
-		
-		var reqIdx = PinAnimator.idxArr[playIdx];
-		var actionCode = PinAnimator.actionArr[playIdx];
-		
-		if(actionCode == PinAnimator.ANICODE_HIDE_ANIMATION){
-			reportData[reqIdx].pin.setAnimation(google.maps.Animation.BOUNCE);
-		} else if(actionCode == PinAnimator.ANICODE_HIDE){
-			reportData[reqIdx].pin.setVisible(false);
-		} else if(actionCode == PinAnimator.ANICODE_SHOW_ANIMATION){
-			reportData[reqIdx].pin.setAnimation(google.maps.Animation.DROP);
-			reportData[reqIdx].pin.setVisible(true);
-		}
-	}, timeout);
-};
-
-var AnimationQueue = new Object();
-AnimationQueue.queue = new Array();
-AnimationQueue.queueCnt = 0;
-
-AnimationQueue.add = function(animationSet){
-	this.queue[this.queueCnt] = animationSet;
-	this.queueCnt++;
-	
-	if(!this.runStatus){
-		this.run();
-	}
-};
-
-AnimationQueue.setTimeout = function(func, timeout){
-	this.regCnt++;
-	
-	setTimeout(func, timeout);
-	setTimeout(function(){
-		AnimationQueue.regCnt--;
-		
-		if(AnimationQueue.regCnt == 0)
-			AnimationQueue.run();
-	}, timeout + 1000);
-};
-
-
-AnimationQueue.runCnt = 0;
-AnimationQueue.runStatus = false;
-AnimationQueue.run = function(){
-	if(this.runCnt != this.queueCnt){
-		runStatus = true;
-		this.queue[this.runCnt]();
-		this.runCnt++;
-	}else {
-		runStatus = false;
-	}
-};
-AnimationQueue.regCnt = 0;
 
 var debugJSON;
 
@@ -291,7 +192,6 @@ function changePin(event, ui){
 	changePinEvent = setTimeout(function(){
 		var aniCnt = 0;
 		
-//		var tmpMaxTimeout = PinAnimator.getMaxTimeout();
 //		console.log(tmpMaxTimeout + "??");
 		var tmpMaxTimeout = 0;
 		
@@ -300,13 +200,13 @@ function changePin(event, ui){
 				if(reportData[i].pin.getVisible()){
 					
 				} else {
-					PinAnimator2.addAni(i, PinAnimator2.ANICODE_SHOW_ANIMATION, tmpMaxTimeout + (aniCnt * PIN_ANIMATION_TERM));
+					PinAnimator.addAni(i, PinAnimator.ANICODE_SHOW_ANIMATION, tmpMaxTimeout + (aniCnt * PIN_ANIMATION_TERM));
 					aniCnt++;
 				}
 			} else {
 				if(reportData[i].pin.getVisible()){
-					PinAnimator2.addAni(i, PinAnimator2.ANICODE_HIDE_ANIMATION, tmpMaxTimeout + (aniCnt * PIN_ANIMATION_TERM));
-					PinAnimator2.addAni(i, PinAnimator2.ANICODE_HIDE, tmpMaxTimeout + (aniCnt * PIN_ANIMATION_TERM) + 500);
+					PinAnimator.addAni(i, PinAnimator.ANICODE_HIDE_ANIMATION, tmpMaxTimeout + (aniCnt * PIN_ANIMATION_TERM));
+					PinAnimator.addAni(i, PinAnimator.ANICODE_HIDE, tmpMaxTimeout + (aniCnt * PIN_ANIMATION_TERM) + 500);
 					aniCnt++;
 				} else {
 					
@@ -407,8 +307,21 @@ function showPins(){
 		item.icon = icon;
 		item.mapContent = content;
 		item.position = new google.maps.LatLng(item.lat, item.lng);
+		
+		item.pin = new google.maps.Marker({
+//			animation: google.maps.Animation.DROP,
+			icon: item.icon,
+			position: item.position,
+			map: reportMap,
+			title: item.mapContent,
+			zIndex: reportData.length - 1 - i,
+			visible: false
+		});
+		item.pin.setVisible(false);
 	}
 	
+	
+/* OldVersion Backup	
 	AnimationQueue.add(function(){
 		pinAnimationPlayIdx[0] = 0;
 		for(i = reportData.length - 1; i >= 0 ; i--){
@@ -428,6 +341,7 @@ function showPins(){
 			}, (pinAnimationTimeline += PIN_ANIMATION_TERM));
 		}
 	});
+*/
 }
 
 function showReportList(){

@@ -9,14 +9,16 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/default.css" />
 	<title>
 <c:if test="${not empty page_title}">
 		${page_title} - 
 </c:if>
 		재난알림센터
 	</title>
+	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/default.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="${contextPath}/resources/js/default.js"></script>
 	<script type="text/javascript">
 var CONTEXT_PATH = "${contextPath}";
@@ -25,7 +27,7 @@ var CONTEXT_PATH = "${contextPath}";
 <body>
 <div class="head_box">
 	<div class="app_ad">알파버전 안드로이드 앱을 받으시려면 <a href="./resources/disastercenter_0.5.apk">여기</a>를 누르세요.</div>
-	<div class="title" onclick="location.href='${contextPath}';">
+	<div class="title" onclick="location.href='${contextPath}/';">
 		재난알림센터
 	</div>
 	<div class="top_menu">

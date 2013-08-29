@@ -9,6 +9,8 @@
 		▶ 알림 지도
 	</div>
 	<div class="report_map" id="map-canvas"></div>
+	<div id="slider-range"></div>
+	<div id="slider-range-text"></div>
 </div>
 <div class="home_box report_list_box">
 	<div class="box_title">
@@ -22,7 +24,7 @@
 			<td class="report_list_report_datetime">보고시간</td>
 		</tr>
 		<tr id="report_list_item" >
-			<td class="list_loading" colspan="4">로딩중입니다.</td>
+			<td class="list_loading" colspan="4" id="loading_msg">로딩중입니다.</td>
 		</tr>
 	</table>
 </div>
