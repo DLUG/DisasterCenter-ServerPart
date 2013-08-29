@@ -85,7 +85,17 @@ public class ServiceGetterKmaData extends ServicePeriodImpl{
 				
 				putReport(latlng.lat, latlng.lng, ConstantDisasterType.TEMP_LOW_WATCH, content, sqlMapClientTemplate);
 			}
-			
+//		Rain
+			if((Double) currentWeather.get("rain1_meter") > ConstantAlertLimit.RAIN1_HARD_ALERT){
+				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
+				
+				String content = "[기상청] 집중호우 기준 강우량 초과!<br>\n<br>\n" 
+						+ (Integer) currentWeather.get("hour") + "시 현재 집중호우 기준 기준 강우량인 시간 당 " + ConstantAlertLimit.RAIN1_HARD_ALERT + " mm가 넘었습니다. 침수피해에 주의해주시기바랍니다.<br>\n<br>\n"
+						+ "현재 시간 당 강우량: " + currentWeather.get("rain1_meter");
+				
+				putReport(latlng.lat, latlng.lng, ConstantDisasterType.RAIN_HARD_ALERT, content, sqlMapClientTemplate);
+			}
+//		Wind
 			if((Double) currentWeather.get("wind_speed") > ConstantAlertLimit.WIND_FAST_ALERT){
 				CoordLatLng latlng = CoordinateTools.Kma2latlng((Integer) target.get("kma_x"), (Integer) target.get("kma_y"));
 				

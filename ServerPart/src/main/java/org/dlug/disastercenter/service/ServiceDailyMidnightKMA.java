@@ -85,7 +85,8 @@ public class ServiceDailyMidnightKMA extends ServiceSchedulerImpl {
 				
 				String content = "[기상청] 호우경보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("alert_hard_rain_start") + " 시 부터 "
-					+ "최대 " + todayWeather.get("rain6_max") + " mm의 6시간강우량이 예상되어 호우경보가 발령될 가능성이 높습니다.";
+					+ "최대 " + todayWeather.get("rain6_max") + " mm의 6시간강우량이 예상되어 호우경보가 발령될 가능성이 높습니다.<br>\n<br>\n"
+					+ "하루 예상 강수량: " + todayWeather.get("today_rain_amount");
 				
 				putReport(latlng.lat, latlng.lng, 902, content, sqlMapClientTemplate);
 			}
@@ -95,7 +96,8 @@ public class ServiceDailyMidnightKMA extends ServiceSchedulerImpl {
 				
 				String content = "[기상청] 호우주의보 예정!<br>\n<br>\n" 
 					+ todayWeather.get("watch_hard_rain_start") + " 시 부터 "
-					+ "최대 " + todayWeather.get("rain6_max") + " mm의 6시간강우량이 예상되어 호우주의보가 발령될 가능성이 높습니다.";
+					+ "최대 " + todayWeather.get("rain6_max") + " mm의 6시간강우량이 예상되어 호우주의보가 발령될 가능성이 높습니다.<br>\n<br>\n"
+					+ "하루 예상 강수량: " + todayWeather.get("today_rain_amount");
 				
 				putReport(latlng.lat, latlng.lng, 901, content, sqlMapClientTemplate);
 			}
