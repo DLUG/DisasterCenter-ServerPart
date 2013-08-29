@@ -1,7 +1,11 @@
+var PIN_ANIMATION_TERM = 50;
+
 var PAGE_LIST_AMOUNT = 9;	// MUST ODD Number;
 
 var reportData;
 var debugJSON;
+
+var reportMap;
 
 var minIdx;
 var maxIdx;
@@ -10,13 +14,50 @@ var pageAmount;
 var currentPage = 0;
 
 $(document).ready(function(){
+	map_init();
+	
 	if(window.location.hash) {
 		var hash = window.location.hash.substring(1);
 		getPage(hash);
 	} else {
 		getPage(0);	
 	}
+	
 });
+
+function map_init(){
+	var mapOptions = {
+		zoom: 6,
+		center: new google.maps.LatLng(36.31263534904849, 127.94677734375),
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	
+	reportMap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+/*	
+	var icon = "";
+	if(reportTypeDisaster == 905)
+		icon = CONTEXT_PATH + "/resources/img/weather_temp_high_watch.png";
+	else if(reportTypeDisaster == 905)
+		icon = CONTEXT_PATH + "/resources/img/weather_temp_high_alert.png";
+	else if(reportTypeDisaster == 901)
+		icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+	else if(reportTypeDisaster == 902)
+		icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+	else if(reportTypeDisaster == 903)
+		icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+	else if(reportTypeDisaster == 904)
+		icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+	
+	new google.maps.Marker({
+		animation: google.maps.Animation.DROP,
+		icon: icon,
+		position: new google.maps.LatLng(reportLat, reportLng),
+		map: reportMap,
+		title: reportContent
+	});
+*/
+}
+
 
 function getPage(page){
 	if(page == 0){
@@ -59,7 +100,20 @@ function getPage(page){
 			reportData = data;
 			
 			currentPage = page;
-			showReportList();
+			
+			// ==== Remove Pin =====
+			
+			var aniCnt = 0;
+			
+			for(var i = 0; i < PinAnimator.pinArr.length; i++){
+				PinAnimator.addAni(i, PinAnimator.ANICODE_HIDE_ANIMATION, (aniCnt * PIN_ANIMATION_TERM));
+				PinAnimator.addAni(i, PinAnimator.ANICODE_HIDE, (aniCnt * PIN_ANIMATION_TERM) + 500);
+				aniCnt++;
+			}
+			
+			// =====================
+
+			setTimeout(showReportList, aniCnt * PIN_ANIMATION_TERM + 500);
 		},
 		error: function(data, status, err){
 			alert(err);
@@ -68,6 +122,7 @@ function getPage(page){
 }
 
 function showReportList(){
+	
 	var list = $('#report_list');
 	var backupedHeader = $('#report_list_header').clone();
 	
@@ -76,12 +131,12 @@ function showReportList(){
 	
 	var data = reportData.data;
 	
-	var i;
+	var tmpPinArr = new Array();
 	
-	for(i = 0; i < data.length; i++){
+	for(var i = 0; i < data.length; i++){
 		var reportDatetime = new Date(data[i].timestamp);
 		
-		var item = $("<tr onclick=\"location.href='" + CONTEXT_PATH + "/disaster_report/" + data[i].idx + "'\"></tr>");
+		var item = $("<tr onclick=\"location.href='" + CONTEXT_PATH + "/disaster_report/" + data[i].idx + "'\" onmouseover=\"reportMouseOver(" + i + ")\"></tr>");
 		item.append($("<td>" + data[i].idx + "</td>"));
 		item.append($("<td>" + data[i].loc_name + "</td>"));
 		item.append($("<td>" + CONSTANT_DISASTER_TYPE[data[i].type_disaster] + "</td>"));
@@ -90,6 +145,54 @@ function showReportList(){
 				+ reportDatetime.getHours() + ":" + reportDatetime.getMinutes() + "</td>"));
 		
 		list.append(item);
+		
+		// =========== for Map ============
+		var reportTypeDisaster = data[i].type_disaster;
+		var reportLat = data[i].lat;
+		var reportLng = data[i].lng;
+		var reportContent = data[i].content.replace(/\n/g, "");
+		reportContent = reportContent.replace(/<br>/g, "\n");
+		reportContent += "\n" + "지역명: " + data[i].loc_name;
+		
+		var reportDate = new Date (data[i].timestamp);
+
+		
+		
+		reportContent += "\n" + "등록날짜/시각: " +  (reportDate.getMonth() + 1) + "월 " + reportDate.getDate() + "일 " 
+				+ reportDate.getHours() + ":" + reportDate.getMinutes(); 
+		
+		var icon = "";
+		if(reportTypeDisaster == 905)
+			icon = CONTEXT_PATH + "/resources/img/weather_temp_high_watch.png";
+		else if(reportTypeDisaster == 905)
+			icon = CONTEXT_PATH + "/resources/img/weather_temp_high_alert.png";
+		else if(reportTypeDisaster == 901)
+			icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+		else if(reportTypeDisaster == 902)
+			icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+		else if(reportTypeDisaster == 903)
+			icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+		else if(reportTypeDisaster == 904)
+			icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+		
+		tmpPinArr[i] = new google.maps.Marker({
+			animation: google.maps.Animation.DROP,
+			icon: icon,
+			position: new google.maps.LatLng(reportLat, reportLng),
+			map: reportMap,
+			title: reportContent,
+			visible: false,
+			zIndex: data.length - 1 - i
+		});
+	}
+	
+	PinAnimator.pinArr = tmpPinArr;
+	
+	var aniCnt = 0;
+	
+	for(var i = 0; i < data.length; i++){
+		PinAnimator.addAni(i, PinAnimator.ANICODE_SHOW_ANIMATION, (aniCnt * PIN_ANIMATION_TERM));
+		aniCnt++;
 	}
 	
 	// ========= Page List Proc =======
@@ -166,5 +269,15 @@ function showReportList(){
 		for(var i = 0; i < amountHalfBlock; i++){
 			pageList.append("<div class='page_btn_half'> </div>");
 		}
+	}
+}
+
+function reportMouseOver(idx){
+	for(var i = 0; i < PinAnimator.pinArr.length; i++){
+		PinAnimator.pinArr[i].setAnimation();
+	}
+	
+	if(PinAnimator.pinArr[idx].getVisible()){
+		PinAnimator.pinArr[idx].setAnimation(google.maps.Animation.BOUNCE);
 	}
 }

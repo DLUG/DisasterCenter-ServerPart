@@ -1,7 +1,3 @@
-// ==== Setting ====
-var PIN_ANIMATION_TERM = 10;
-// =============================
-
 var reportMap;
 var reportData = new Array();
 var reportDataCnt = 0;
@@ -221,29 +217,6 @@ function showPins(){
 		
 		PinAnimator.pinArr[i] = item.pin;
 	}
-	
-	
-/* OldVersion Backup	
-	AnimationQueue.add(function(){
-		pinAnimationPlayIdx[0] = 0;
-		for(i = reportData.length - 1; i >= 0 ; i--){
-			AnimationQueue.setTimeout(function(){
-				var reportItem = reportData[reportData.length - 1 - pinAnimationPlayIdx[0]];
-				
-				reportItem.pin = new google.maps.Marker({
-					animation: google.maps.Animation.DROP,
-					icon: reportItem.icon,
-					position: reportItem.position,
-					map: reportMap,
-					title: reportItem.mapContent,
-					zIndex: pinAnimationPlayIdx[0]
-				});
-				
-				pinAnimationPlayIdx[0]++;
-			}, (pinAnimationTimeline += PIN_ANIMATION_TERM));
-		}
-	});
-*/
 }
 
 function showReportList(){

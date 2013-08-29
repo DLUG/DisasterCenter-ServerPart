@@ -1,3 +1,7 @@
+// ==== Setting ====
+var PIN_ANIMATION_TERM = 10;
+// =============================
+
 function JobTreeNode(initValue){
 //	console.log("New: " + initValue.timeline);
 	this.jobTicket = initValue;
