@@ -16,6 +16,13 @@
 	width: 20px;
 }
 
+.page_btn_half{
+	text-align: center;
+	float: left;
+	margin: 5px 2px 5px 3px;
+	width: 10px;
+}
+
 .page_current{
 	font-weight: bold;
 }

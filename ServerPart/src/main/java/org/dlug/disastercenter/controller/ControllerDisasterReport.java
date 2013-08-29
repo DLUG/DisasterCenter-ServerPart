@@ -86,8 +86,10 @@ public class ControllerDisasterReport extends ControllerPages{
 		model.addAttribute("loc_name", article.get("loc_name"));
 		model.addAttribute("title", typeDisaster + "(" + article.get("loc_name") + ")");
 		
-		model.addAttribute("type_report", ConstantReportType.code2string((Integer) article.get("type_report")));
-		model.addAttribute("type_disaster", typeDisaster);
+		model.addAttribute("type_report", (Integer) article.get("type_report"));
+		model.addAttribute("type_disaster", (Integer) article.get("type_disaster"));
+		model.addAttribute("type_report_string", ConstantReportType.code2string((Integer) article.get("type_report")));
+		model.addAttribute("type_disaster_string", typeDisaster);
 		
 		String datetime = ModelImpl.sdf.format(((Date) article.get("datetime")));
 		model.addAttribute("datetime", datetime);

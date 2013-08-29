@@ -8,6 +8,8 @@
 var reportLat = ${lat};
 var reportLng = ${lng};
 var reportContent = "${loc_name}";
+var reportTypeDisaster = ${type_disaster};
+var reportTypeReport = ${type_report};
 reportContent.replace(/<br>/g, "");
 </script>
 <style>
@@ -27,7 +29,7 @@ reportContent.replace(/<br>/g, "");
 경도: ${lng}<br>
 지역명: ${loc_name}<br>
 정확도: ${accuracy}<br>
-신고유형: ${type_report}<br>
-재난유형: ${type_disaster}<br>
+신고유형: ${type_report_string}<br>
+재난유형: ${type_disaster_string}<br>
 ${content}
 <%@ include file="./layout_tail.jsp" %>

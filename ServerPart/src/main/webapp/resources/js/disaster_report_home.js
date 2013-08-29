@@ -105,12 +105,12 @@ function showReportList(){
 			
 			pageList.append("<div class='prev_prev_page page_btn' onclick='getPage(" + prevPrevPage + ")'>&lt;&lt;</div>");
 		} else {
-			pageList.append("<div class='page_btn')'> </div>");
+			pageList.append("<div class='page_btn'> </div>");
 		}
 		if(currentPage > 1)
 			pageList.append("<div class='prev_page page_btn' onclick='getPage(" + (currentPage - 1) + ")'>&lt;</div>");
 		else
-			pageList.append("<div class='page_btn')'> </div>");
+			pageList.append("<div class='page_btn'> </div>");
 		
 		var viewFirstPage = currentPage - Math.floor(PAGE_LIST_AMOUNT / 2);
 		if(viewFirstPage < 1)
@@ -134,7 +134,7 @@ function showReportList(){
 		if(currentPage < pageAmount)
 			pageList.append("<div class='next_page page_btn' onclick='getPage(" + (currentPage + 1) + ")'>&gt;</div>");
 		else
-			pageList.append("<div class='page_btn')'> </div>");
+			pageList.append("<div class='page_btn'> </div>");
 		
 		if(currentPage < (pageAmount - (PAGE_LIST_AMOUNT / 2))){
 			var nextNextPage = currentPage + PAGE_LIST_AMOUNT;
@@ -143,12 +143,17 @@ function showReportList(){
 			
 			pageList.append("<div class='prev_prev_page page_btn' onclick='getPage(" + nextNextPage + ")'>&gt;&gt;</div>");
 		} else {
-			pageList.append("<div class='page_btn')'> </div>");
+			pageList.append("<div class='page_btn'> </div>");
 		}
 	} else {
-		var i;
-		for(i = 0; i < pageAmount; i++){
-			var viewPage = viewFirstPage + i;
+		var amountHalfBlock = (13 - pageAmount);
+		
+		for(var i = 0; i < amountHalfBlock; i++){
+			pageList.append("<div class='page_btn_half'> </div>");
+		}
+		
+		for(var i = 0; i < pageAmount; i++){
+			var viewPage = 1 + i;
 			var tmpHtml = "<div class='page_num page_btn ";
 			
 			if(viewPage == currentPage)
@@ -156,6 +161,10 @@ function showReportList(){
 			
 			tmpHtml += "' onclick='getPage(" + viewPage + ")'>" + viewPage + "</div>";
 			pageList.append(tmpHtml);
+		}
+		
+		for(var i = 0; i < amountHalfBlock; i++){
+			pageList.append("<div class='page_btn_half'> </div>");
 		}
 	}
 }

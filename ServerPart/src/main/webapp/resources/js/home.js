@@ -281,14 +281,30 @@ function showPins(){
 		
 		if(item.type_report > 1100 && item.type_report < 1199){
 			if(item.type_disaster == 905)
-				icon = "http://maps.google.com/mapfiles/ms/icons/pink.png";
-			else
-				icon = "http://maps.google.com/mapfiles/ms/icons/red.png";
+				icon = CONTEXT_PATH + "/resources/img/weather_temp_high_watch.png";
+			else if(item.type_disaster == 905)
+				icon = CONTEXT_PATH + "/resources/img/weather_temp_high_alert.png";
+			else if(item.type_disaster == 901)
+				icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+			else if(item.type_disaster == 902)
+				icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+			else if(item.type_disaster == 903)
+				icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+			else if(item.type_disaster == 904)
+				icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
 		} else {
 			if(item.type_disaster == 905)
-				icon = "http://maps.google.com/mapfiles/ms/icons/pink-dot.png";
-			else
-				icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+				icon = CONTEXT_PATH + "/resources/img/weather_temp_high_watch.png";
+			else if(item.type_disaster == 905)
+				icon = CONTEXT_PATH + "/resources/img/weather_temp_high_alert.png";
+			else if(item.type_disaster == 901)
+				icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+			else if(item.type_disaster == 902)
+				icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+			else if(item.type_disaster == 903)
+				icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+			else if(item.type_disaster == 904)
+				icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
 		}
 		
 		var content = item.content.replace(/\n/g, "");

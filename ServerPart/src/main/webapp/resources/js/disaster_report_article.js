@@ -9,9 +9,23 @@ function map_init(){
 	
 	reportMap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	
+	var icon = "";
+	if(reportTypeDisaster == 905)
+		icon = CONTEXT_PATH + "/resources/img/weather_temp_high_watch.png";
+	else if(reportTypeDisaster == 905)
+		icon = CONTEXT_PATH + "/resources/img/weather_temp_high_alert.png";
+	else if(reportTypeDisaster == 901)
+		icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+	else if(reportTypeDisaster == 902)
+		icon = CONTEXT_PATH + "/resources/img/weather_rain_hard_watch.png";
+	else if(reportTypeDisaster == 903)
+		icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+	else if(reportTypeDisaster == 904)
+		icon = CONTEXT_PATH + "/resources/img/weather_wind_fast_watch.png";
+	
 	new google.maps.Marker({
 		animation: google.maps.Animation.DROP,
-		icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+		icon: icon,
 		position: new google.maps.LatLng(reportLat, reportLng),
 		map: reportMap,
 		title: reportContent
