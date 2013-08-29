@@ -2,6 +2,7 @@
 <%@ include file="./layout_head.jsp" %>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <script type="text/javascript" src="${contextPath}/constant.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/pin_animator.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/home.js"></script>
 
 <div class="home_box report_map_box">
